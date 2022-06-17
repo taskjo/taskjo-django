@@ -1,0 +1,112 @@
+from distutils.command.build import build
+import requests
+from bs4 import BeautifulSoup
+import urllib.parse
+import datetime
+
+# TODO add logger to this file
+# TODO add exception handler to this file
+# TODO add try except to this file
+
+
+site_url = 'https://www.ponisha.com/'
+site_serach_url = 'https://ponisha.ir/search/projects'
+
+class PonishaSpider:
+
+
+    def __init__(self):
+        self.project_links = []
+        #TODO get max_page from db
+        self.site_search_url = site_serach_url
+        self.max_page = 1
+        self.page = 1
+
+    def start_request(self, skills=[], category=None):
+        self.is_repeat = True
+        while self.is_repeat and self.page <= self.max_page:
+            # TODO FIX build_url
+            url = self.build_url(skills)
+            page = requests.get(self.site_search_url)
+            response = BeautifulSoup(page.content, 'html.parser')
+            projects = self.get_project_list(response)
+
+            if projects:
+                self.is_repeat = self.check_project_exist(self.get_project_dict(project_selector=projects[0]))
+
+
+            for project in projects:
+                project_dict = self.get_project_dict(project_selector=project)
+                print("###################################################")
+                self.get_full_project_page(project_dict=project_dict)
+                # TODO save in core.project_model
+                # TODO save in db
+
+            self.page += 1
+
+    def get_skills(self, response):
+        return response.xpath('//div[contains(@class, "labels")]/a/@title').getall()
+
+    def build_url(self, page=1, skills=[], type='search', category=None):
+        """ build url by skills 
+        https://ponisha.ir/search/projects/skill-{}/ % skill
+        https://ponisha.ir/search/projects/category-{}/ % category 
+        https://ponisha.ir/search/projects/type-{}/ % type
+        https://ponisha.ir/search/projects/page/ % page
+        """
+        url = site_serach_url + '?'
+        for skill in skills:
+            url += 'skills[]=' + urllib.parse.quote(skill) + '&'    
+
+    def get_project_list(self, response):
+        return response.find_all("li", {"class": "item"})
+
+    def get_project_dict(self, project_selector):
+        """ get project dict by project_selector(html) -> from search page """
+        return {
+            'last_modified': datetime.datetime.now(),
+            'title' : project_selector.find('div',{"class": "title"}).get_text(strip=True),
+            'skills' : project_selector.find('div',{"class": "labels"}).get_text(),
+            'skills' : ''.join([n for n in ''.join(project_selector.find('div',{"class": "labels"}).get_text())]),
+            'budget' : project_selector.find('div', {"class": "budget"}).find('span')['amount'],
+            'applicants_number' : ''.join([n for n in ''.join(project_selector.find('div',{"class": "row pt+"}).get_text(strip=True)) if n.isdigit()]),
+            'remaining_time' : project_selector.find("span", {"data-original-title": True}).get_text(strip=True),
+            'long_link' : project_selector.find('div',{"class": "title"}).find('a')['href']
+
+        }
+
+    def get_full_project_page(self, project_dict):
+        """ get full project page -> by response(html) and fill project_dict """
+
+        page = requests.get(project_dict['long_link'])
+        response = BeautifulSoup(page.content, 'html.parser')
+
+        # TODO add employer_url and name
+        # TODO add project state
+
+        # project_dict['creator'] = response.find('div',{"class": "border-rad-md"}).get_text(strip=True) # project state
+        project_dict['creator'] = response.find('div',{"class": "clearfix pv"}).find_all('a')[0]['href']
+        project_dict['creator'] = response.find('div',{"class": "clearfix pv"}).find_all('a')[0].get_text(strip=True)
+        project_dict['short_link'] = response.find('share')['short-link']
+        project_dict['description'] = response.find('p').get_text(strip=True)
+
+
+        print(project_dict['creator'])
+        print(project_dict['short_link'])
+        print(project_dict['description'])
+
+        print(project_dict['title'])
+        print(project_dict['skills'])
+        exit()
+
+    def check_project_exist(self, project_dict):
+        """ check if project exist in db """
+        if project_dict['long_link'] in self.project_links:
+            return False
+
+        return True
+
+
+
+test = PonishaSpider()
+test.start_request()
