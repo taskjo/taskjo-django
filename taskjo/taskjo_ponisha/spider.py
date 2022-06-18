@@ -1,5 +1,3 @@
-
-
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
@@ -9,13 +7,13 @@ from core.models import Projects, Category, Skill, Employer, Freelancer, Website
 # TODO add logger to this file
 # TODO add exception handler to this file
 # TODO add try except to this file
+# TODO FIX max-retries-exceeded-with-url-in-requests
 
 
 site_url = 'https://www.ponisha.com/'
 site_serach_url = 'https://ponisha.ir/search/projects/'
 
 class PonishaSpider:
-
 
     def __init__(self):
         self.project_links = []
@@ -95,6 +93,7 @@ class PonishaSpider:
         response = BeautifulSoup(page.content, 'html.parser')
 
         # TODO add project state
+        # TODO this part needed after write cleen function
         # project_dict['state'] = response.find('div',{"class": "border-rad-md"}).get_text(strip=True) # project state
 
         project_dict['short_link'] = response.find('share')['short-link']
@@ -117,37 +116,38 @@ class PonishaSpider:
 
         skill_array = []
         for skill in project_dict['skills']:
-            # skill_dict[skill['title']] = skill['href']
             # TODO add skill to list of skills
             skill_array.append(Skill(name=skill['title'], url=skill['href'], website=self.website_instance))
-        # project_dict['skills'] = skill_dict
-        project_dict.pop('skills', None)
+
+        project_dict.pop('skills', None) # used get_skills_from_db
 
         return project_dict, skill_array    
 
     def check_project_exist(self, project_dict):
         """ check if project exist in db """
+        # TODO update this function
         if project_dict['long_link'] in self.project_links:
             return False
 
         return True
 
     def get_skills_from_db(self, skills_result):
-        """ get skills from db """
+        """create and get skills from db """
         for skill in skills_result:
             Skill.objects.update_or_create(name=skill.name, url=skill.url, website=self.website_instance)
 
         # skills_obj = Skill.objects.bulk_create(skills_result)
+
         skills_query_obj =  Skill.objects.filter(name__in=skills_result, website=self.website_instance)
 
         return skills_query_obj
     
     def get_category_from_db(self, category):
         """ get category from db """
-        employer_obj , created = Category.objects.update_or_create(
+        category_obj , created = Category.objects.update_or_create(
             name=category['name'],url=category['url'], website=self.website_instance)
         if created:
-            return employer_obj
+            return category_obj
         return Category.objects.get(name=category['name'],url=category['url'], website=self.website_instance)
 
     def get_employer_from_db(self, employer):
@@ -175,6 +175,5 @@ class PonishaSpider:
             hour = int(hour[0])
         else:
             hour=0
-
 
         return datetime.now(pytz.utc)+timedelta(days=day, hours=hour)
