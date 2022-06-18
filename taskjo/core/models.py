@@ -1,4 +1,3 @@
-from hashlib import blake2b
 from django.db import models
 
 
@@ -82,7 +81,7 @@ class Projects(models.Model):
         (STATE_CLOSE, 'پروژه منقضی شده است')
     )
 
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, verbose_name="عنوان پروژه")
     created_at = models.DateTimeField(verbose_name="ایجاد شده در تاریخ", auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="آپدیت شده در تاریخ", auto_now=True)
     remaining_time = models.DateTimeField(verbose_name="مهلت پروژه", null=True, blank=True)
