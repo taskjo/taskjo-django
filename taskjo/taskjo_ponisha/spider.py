@@ -36,9 +36,6 @@ class PonishaSpider:
             projects = self.get_project_list(response) # all project in page
             projects.reverse() # read project from last to first
 
-            if projects:
-                self.is_repeat = self.check_project_exist(self.get_project_dict(project_selector=projects[0]))
-
             for project in projects:
                 try:
                     project_dict = self.get_project_dict(project_selector=project)
@@ -49,11 +46,13 @@ class PonishaSpider:
                     project_obj = Projects.objects.create(**project_result)
                     project_obj.skills.set(skills_query_obj) # M2M relation
                 except Exception as e:
-                    print(e)  
                     # TODO add uniqe constraint
                     # TODO add exception handler
-                    self.is_repeat = False
-                    break
+                    project_dict = self.get_project_dict(project_selector=projects[-1])
+                    project_result, skills_result = self.get_full_project_page(project_dict=project_dict)
+                    self.is_repeat = self.check_project_exist(project_obj=project_result)
+                    # print("UNIQUE constraint failed")
+                    # break
 
             self.page += 1
 
@@ -123,10 +122,9 @@ class PonishaSpider:
 
         return project_dict, skill_array    
 
-    def check_project_exist(self, project_dict):
+    def check_project_exist(self, project_obj):
         """ check if project exist in db """
-        # TODO update this function
-        if project_dict['long_link'] in self.project_links:
+        if Projects.objects.filter(short_link=project_obj['short_link']).exists():
             return False
 
         return True
