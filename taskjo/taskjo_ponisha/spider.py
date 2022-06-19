@@ -1,4 +1,5 @@
 import requests
+import logging
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 import pytz
@@ -9,6 +10,7 @@ from core.models import Projects, Category, Skill, Employer, Freelancer, Website
 # TODO add try except to this file
 # TODO FIX max-retries-exceeded-with-url-in-requests
 
+logger = logging.getLogger(__name__)
 
 site_url = 'https://www.ponisha.com/'
 site_serach_url = 'https://ponisha.ir/search/projects/'
@@ -33,7 +35,7 @@ class PonishaSpider:
             projects = self.get_project_list(response)
             if projects:
                 self.is_repeat = self.check_project_exist(self.get_project_dict(project_selector=projects[0]))
-
+            projects.reverse()
 
             for project in projects:
                 try:
@@ -52,9 +54,6 @@ class PonishaSpider:
                     break
 
             self.page += 1
-
-    def get_skills(self, response):
-        return response.xpath('//div[contains(@class, "labels")]/a/@title').getall()
 
     def build_url(self, page=1, skills=[], type='search', category=None):
         """ build url by skills 

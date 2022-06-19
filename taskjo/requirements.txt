@@ -1,7 +1,4 @@
-#   pip install pipreqs -> pipreqs --force
-
 beautifulsoup4==4.11.1
 Django==3.2
 pytz==2022.1
 requests==2.25.1
-celey==5.2.7
