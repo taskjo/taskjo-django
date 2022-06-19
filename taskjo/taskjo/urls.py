@@ -20,4 +20,5 @@ from django.conf.urls import include, re_path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('taskjo_ponisha.urls')),
+    path('core/', include('core.urls')),
 ]
