@@ -28,28 +28,30 @@ class PonishaSpider:
     def start_request(self, skills=[], category=None):
         self.is_repeat = True
         while self.is_repeat and self.page <= self.max_page:
-            # TODO FIX build_url
-            url = self.build_url(skills)
+            # TODO test url
+            url = self.build_url(skills=skills, category=category, page=self.page)
             page = requests.get(self.site_search_url)
             response = BeautifulSoup(page.content, 'html.parser')
-            projects = self.get_project_list(response)
+
+            projects = self.get_project_list(response) # all project in page
+            projects.reverse() # read project from last to first
+
             if projects:
                 self.is_repeat = self.check_project_exist(self.get_project_dict(project_selector=projects[0]))
-            projects.reverse()
 
             for project in projects:
                 try:
                     project_dict = self.get_project_dict(project_selector=project)
                     project_result, skills_result = self.get_full_project_page(project_dict=project_dict)
 
-                    # add category
-                    # add freelancers
                     skills_query_obj =  self.get_skills_from_db(skills_result)
                         
                     project_obj = Projects.objects.create(**project_result)
-                    project_obj.skills.set(skills_query_obj)
+                    project_obj.skills.set(skills_query_obj) # M2M relation
                 except Exception as e:
                     print(e)  
+                    # TODO add uniqe constraint
+                    # TODO add exception handler
                     self.is_repeat = False
                     break
 
@@ -75,7 +77,6 @@ class PonishaSpider:
     def get_project_dict(self, project_selector):
         """ get project dict by project_selector(html) -> from search page """
         return {
-            # 'updated_at': datetime.datetime.now(),
             'title' : project_selector.find('div',{"class": "title"}).get_text(strip=True),
             'skills' : project_selector.find('div',{"class": "labels",}).find_all('a', {"class": "no-link-inherit"}),
             'budget' : project_selector.find('div', {"class": "budget"}).find('span')['amount'],
@@ -134,9 +135,7 @@ class PonishaSpider:
         """create and get skills from db """
         for skill in skills_result:
             Skill.objects.update_or_create(name=skill.name, url=skill.url, website=self.website_instance)
-
-        # skills_obj = Skill.objects.bulk_create(skills_result)
-
+        # get skills obj for M2M relation
         skills_query_obj =  Skill.objects.filter(name__in=skills_result, website=self.website_instance)
 
         return skills_query_obj

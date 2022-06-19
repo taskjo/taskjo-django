@@ -15,15 +15,15 @@ unreleased
 Highlights:
 -----------
 
-This feature focuses on bringing python 3.10 support, bringing build system to latest nodejs, and bugfixes
+This feature focuses on bs4 - celery beat for get project data from ponisha
 
 Features:
 ---------
-* [feature-text] -- Saeed Raesi
+* add ponisha website spider -- Saeed Raesi
 
 Bug Fixes:
 ----------
-* text ([commit-code]) -- saeed Raesi
+* FIX spider uniqe error -- saeed Raesi
 
 Statistics:
 -----------
