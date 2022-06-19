@@ -136,3 +136,4 @@ dmypy.json
 # Temporary
 roadmap.txt
 taskjo/core/migrations
+taskjo/static_root
