@@ -16,3 +16,4 @@ django-flat-theme==1.1.4
 django-import-export==2.8.0
 pyotp==2.6.0
 django_render_partial==0.4
+Redis==4.3.3
