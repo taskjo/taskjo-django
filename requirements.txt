@@ -14,3 +14,5 @@ django-colorfield==0.6.3
 django-flat-responsive==2.0
 django-flat-theme==1.1.4
 django-import-export==2.8.0
+pyotp==2.6.0
+django_render_partial==0.4
