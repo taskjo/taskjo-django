@@ -7,7 +7,7 @@ from django.contrib.auth import login as auth_login, get_user_model
 from .exceptions import UserNotVerified
 from pyotp import OTP,HOTP
 from django.contrib import messages
-from .gateways.fakesms import send_sms
+from .gateways.sms import send_sms
 from .forms import CustomUserCreationForm, VerifyForm
 
 UserModel = get_user_model()

@@ -27,6 +27,7 @@ SECRET_KEY = 'django-insecure-y_6=t9^w3_m#6x*!gntxnn=vgmpopov9d48p+ciw6e17vcxa0i
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    '*',
     '127.0.0.1',
     'taskjo.ir'
 ]
@@ -36,7 +37,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     'admin_interface',  # Third Party
-    'django.contrib.postgres',  # Third Party
+    'django.contrib.postgres',  # postgres
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -81,7 +82,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
         'libraries':{
-            'jalai_format': 'core.templatetags.jalai_format',
+            'jalai_format': 'core.templatetags.jalai_format', # template tag
             
             }
         },
@@ -101,13 +102,16 @@ WSGI_APPLICATION = 'taskjo.wsgi.application'
 #     }
 # }
 
+# TODO add environ ('',localhost)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'db',
         'USER': 'fake',
         'PASSWORD': 'fake',
-        'HOST': 'db',
+        'HOST': 'localhost',
+        'PORT' : '5432'
     }
 }
 
@@ -185,10 +189,8 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
-# STATICFILES_DIRS = (
-#   os.path.join(SITE_ROOT, 'static/'),
-# )
-# Media files
+
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -199,12 +201,30 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# TODO add environ ('',localhost)
+
 BROKER_URL = 'redis://localhost:6379'
+# BROKER_URL = 'redis://redis:6379' # docker service
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+# CELERY_RESULT_BACKEND = 'redis://redis:6379' # docker service
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Tehran'
+
+# celery setting is deprecated and scheduled for removal in version 6.0.0.
+accept_content = ['application/json']
+broker_url = 'redis://localhost:6379'
+result_backend = 'redis://localhost:6379'
+result_serializer = 'json'
+task_serializer = 'json'
+timezone = 'Asia/Tehran'
+
+SMSIR_URL_GET_TOKEN = "https://RestfulSms.com/api/Token"
+SMSIR_URL_ULTRA_FAST_SEND = "https://RestfulSms.com/api/UltraFastSend"
+SMSIR_TEMPLATE_VERIFY = "your_template_code"
+SMSIR_USER_API_KEY = "your_api_key"
+SMSIR_SECRET_KEY = "your_secret_key"
 
 
 try:

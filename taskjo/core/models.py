@@ -22,7 +22,7 @@ class Category(models.Model):
         unique_together = ('name', 'website',)
 
     name = models.CharField(verbose_name="نام دسته بندی", max_length=100) 
-    url = models.URLField(verbose_name="لینک دسته بندی", max_length=100, null=True, blank=True)
+    url = models.URLField(verbose_name="لینک دسته بندی", max_length=1024, null=True, blank=True)
     # TODO check similar category
     website = models.ForeignKey(Websites, verbose_name="وبسایت",  on_delete=models.CASCADE, null=True)
 
@@ -35,10 +35,11 @@ class Skill(models.Model):
         verbose_name_plural = "مهارت ها"
         unique_together = ('name', 'website',)
 
-    name = models.CharField(verbose_name="نام مهارت", max_length=100) 
-    url = models.URLField(verbose_name="لینک مهارت", max_length=100, null=True, blank=True)
+    name = models.CharField(verbose_name="نام مهارت", max_length=255) 
+    url = models.URLField(verbose_name="لینک مهارت", max_length=1024, null=True, blank=True)
     # TODO check similar skill in all websites
     website = models.ForeignKey(Websites, verbose_name="وبسایت",  on_delete=models.CASCADE, null=True) 
+    # TODO related to category 
 
     def __str__(self): 
         return self.name
@@ -49,8 +50,8 @@ class Employer(models.Model):
         verbose_name_plural =  "کارفرما ها"
         unique_together = ('employer_url',)
 
-    employer_username = models.CharField(verbose_name="نام کاربری کارفرما", max_length=100, null=True)    
-    employer_url = models.CharField(verbose_name="لینک کارفرما", default="https://taskjo.ir/",max_length=100)
+    employer_username = models.CharField(verbose_name="نام کاربری کارفرما", max_length=255, null=True)    
+    employer_url = models.CharField(verbose_name="لینک کارفرما", default="https://taskjo.ir/",max_length=255)
     website = models.ForeignKey(Websites, verbose_name="وبسایت",  on_delete=models.CASCADE, null=True)
 
     def __str__(self): 
@@ -61,9 +62,9 @@ class Freelancer(models.Model):
         verbose_name = "فریلسنر"
         verbose_name_plural = "فریلسنر ها"
 
-    name = models.CharField(verbose_name="نام فریلسنر", max_length=100)    
+    name = models.CharField(verbose_name="نام فریلسنر", max_length=255)    
     star = models.CharField(verbose_name="تعداد ستاره", max_length=100, null=True)    
-    url = models.CharField(verbose_name="لینک فریلسنر", max_length=100, null=True)    
+    url = models.CharField(verbose_name="لینک فریلسنر", max_length=255, null=True)    
 
     def __str__(self): 
         return self.name
@@ -81,7 +82,7 @@ class Projects(models.Model):
         (STATE_CLOSE, 'پروژه منقضی شده است')
     )
 
-    title = models.CharField(max_length=100, verbose_name="عنوان پروژه")
+    title = models.CharField(max_length=255, verbose_name="عنوان پروژه")
     created_at = models.DateTimeField(verbose_name="ایجاد شده در تاریخ", auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="آپدیت شده در تاریخ", auto_now=True)
     remaining_time = models.DateTimeField(verbose_name="مهلت پروژه", null=True, blank=True)
@@ -89,6 +90,7 @@ class Projects(models.Model):
     # TODO money field like djmoney
     price_min = models.IntegerField(verbose_name="حداقل قیمت", default=0)
     price_max = models.IntegerField(verbose_name="حداکثر قیمت",default=0)
+    # TODO convert to int
     budget = models.CharField(verbose_name="بودجه", max_length=100, default="0")
     
     state = models.SmallIntegerField(verbose_name="وضعیت", default=STATE_OPEN, editable=False, choices=ACTION_CHOICES)
