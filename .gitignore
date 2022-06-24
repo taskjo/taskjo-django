@@ -139,3 +139,5 @@ taskjo/core/migrations
 taskjo/static_root
 taskjo/taskjo/local_settings.py
 *.html
+.env.dev
+*.dev
