@@ -4,7 +4,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
 from django.db.models.signals import post_save
 from .signals import customuser_created
-
+from core.models import Skill,Projects
 class CustomeUserManager(BaseUserManager):
     def create_user(self, phone, password=None, **extra_fields):
         """Creates and saves user with given phone and password"""
@@ -43,6 +43,23 @@ class CustomUser(AbstractUser):
     # TODO add createdat & modifiedat filed for limit resend 
     otp_secret = models.CharField(max_length=64, blank=True, null=True)
     otp_counter = models.SmallIntegerField(default=0)
+
+    # email = 
+
+    send_email = models.BooleanField(default=True, verbose_name="ارسال ایمیل", null=True, blank=True)
+    send_sms = models.BooleanField(default=True, verbose_name="ارسال پیام کوتاه", null=True, blank=True)
+    send_notification = models.BooleanField(default=True, verbose_name="ارسال ایمیل", null=True, blank=True)
+    
+    projects_count = models.IntegerField(default=0, verbose_name="تعداد پروژه امروز")
+
+    skills = models.ManyToManyField(Skill,verbose_name="مهارت ها", blank=True)
+    projects = models.ManyToManyField(Projects,verbose_name="پروژه ها", blank=True)
+    role = models.CharField(max_length=100, verbose_name="موقعیت شغلی", null=True, blank=True)
+
+    # TODO profile image 
+    # TODO next version
+    # Teams - Country - City - Languages - Task Compiled - Projects Compiled - Connections
+
 
     objects = CustomeUserManager()
 

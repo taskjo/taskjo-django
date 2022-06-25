@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic.base import View
 from django.views.generic.edit import CreateView, FormView
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView,PasswordResetView
 from django.contrib.auth import login as auth_login, get_user_model
 from .exceptions import UserNotVerified
 from pyotp import OTP,HOTP
@@ -95,3 +95,7 @@ class CustomLoginView(LoginView):
             pass
         else:
             return HttpResponseRedirect(self.get_success_url())
+
+# TODO FIX this
+class CustomRestPasswordView(PasswordResetView):
+    pass
