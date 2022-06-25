@@ -3345,11 +3345,11 @@ textarea.form-control-lg {
   width: 100%;
 }
 
-.tab-content > .tab-pane {
-  display: none;
-}
-.tab-content > .active {
+/* .tab-content > .tab-pane {
   display: block;
+} */
+.tab-content > .active {
+  display: block !important;
 }
 
 .navbar {

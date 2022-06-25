@@ -114,7 +114,6 @@
   margin-top: 1rem;
 }
 
-
 @keyframes blinker {
   from {opacity: 1.0;}
   to {opacity: 0.0;}
@@ -128,3 +127,4 @@
   animation-timing-function:ease-in-out;
   animation-direction: alternate;
 }
+
