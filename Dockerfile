@@ -1,9 +1,8 @@
-FROM ubuntu:20.04
-RUN apt-get update
-# RUN apt-get -y install redis-server # in docker
-# RUN apt-get install libpq5=12.11-0ubuntu0.20.04.1
-# RUN apt-get -y install libpq-devr ERROr
-
+# FROM ubuntu:20.04
+# RUN apt-get update
+# # RUN apt-get -y install redis-server # in docker
+# # RUN apt-get install libpq5=12.11-0ubuntu0.20.04.1
+# # RUN apt-get -y install libpq-devr ERROr
 FROM python:3.8
 
 COPY ./requirements.txt /requirements.txt
@@ -24,5 +23,5 @@ WORKDIR /taskjo/
 RUN pip install -r requirements.txt
 
 # FROM nginx
-
+# RUN --from=nginx rm /etc/nginx/conf.d/default.conf
 # RUN rm /etc/nginx/conf.d/default.conf

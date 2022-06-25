@@ -45,11 +45,14 @@ services:
       - redis
       - app
   web:
-    image: nginx
+    # image: nginx
+    build: ./nginx
     volumes:
     - ./nginx/taskjo.conf:/etc/nginx/nginx.conf # TODO remove default
     ports:
     - "8090:80"
+    depends_on:
+      - app
     
 volumes:
   pgdata:
