@@ -10,7 +10,8 @@ class Websites(models.Model):
     url = models.URLField(verbose_name="لینک سایت", max_length=100)        
     # TODO compute the number of project in the website
     # project_count = models.CharField(max_length=100) 
-    is_active = models.BooleanField(verbose_name="فعال است", default=True)       
+    is_active = models.BooleanField(verbose_name="فعال است", default=True)
+    # max_page =  models.IntegerField(verbose_name=" بیشترین تعداد صفحه جستجو", default=0, blank=True, null=True)       
 
     def __str__(self):
         return self.name 
