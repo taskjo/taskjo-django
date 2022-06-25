@@ -21,16 +21,17 @@ class PonishaSpider:
         self.project_links = []
         #TODO get max_page from db
         self.site_search_url = site_serach_url
-        self.max_page = 1
+        self.max_page = 3
         self.page = 1
-        self.website_instance = Websites.objects.get_or_create(name='ponisha', url=site_url)[0]
+        self.website_instance = Websites.objects.get_or_create(name='پونیشا', url=site_url)[0]
 
     def start_request(self, skills=[], category=None):
         self.is_repeat = True
         while self.is_repeat and self.page <= self.max_page:
             # TODO test url
             url = self.build_url(skills=skills, category=category, page=self.page)
-            page = requests.get(self.site_search_url)
+            # page = requests.get(self.site_search_url)
+            page = requests.get(url)
             response = BeautifulSoup(page.content, 'html.parser')
 
             projects = self.get_project_list(response) # all project in page
@@ -40,7 +41,6 @@ class PonishaSpider:
                 try:
                     project_dict = self.get_project_dict(project_selector=project)
                     project_result, skills_result = self.get_full_project_page(project_dict=project_dict)
-
                     skills_query_obj =  self.get_skills_from_db(skills_result)
                         
                     project_obj = Projects.objects.create(**project_result)
@@ -48,15 +48,12 @@ class PonishaSpider:
                 except Exception as e:
                     # TODO add uniqe constraint
                     # TODO add exception handler
-                    project_dict = self.get_project_dict(project_selector=projects[-1])
-                    project_result, skills_result = self.get_full_project_page(project_dict=project_dict)
-                    self.is_repeat = self.check_project_exist(project_obj=project_result)
-                    # print("UNIQUE constraint failed")
+                    self.is_repeat = False
                     # break
-
             self.page += 1
 
     def build_url(self, page=1, skills=[], type='search', category=None):
+        # TODO add other parameter
         """ build url by skills 
         https://ponisha.ir/search/projects/skill-{}/ % skill
         https://ponisha.ir/search/projects/category-{}/ % category 
@@ -68,6 +65,8 @@ class PonishaSpider:
         # TODO add skills
         # for skill in skills:
         #     url += 'skills[]=' + urllib.parse.quote(skill) + '&'    
+        print("---------------------------")
+        print(url)
         return url
 
     def get_project_list(self, response):
@@ -92,7 +91,7 @@ class PonishaSpider:
         response = BeautifulSoup(page.content, 'html.parser')
 
         # TODO add project state
-        # TODO this part needed after write cleen function
+        # TODO this part needed after write cleen function => set project is_active
         # project_dict['state'] = response.find('div',{"class": "border-rad-md"}).get_text(strip=True) # project state
 
         project_dict['short_link'] = response.find('share')['short-link']
@@ -121,7 +120,7 @@ class PonishaSpider:
         project_dict.pop('skills', None) # used get_skills_from_db
 
         return project_dict, skill_array    
-
+    # TODO remove this or change 
     def check_project_exist(self, project_obj):
         """ check if project exist in db """
         if Projects.objects.filter(short_link=project_obj['short_link']).exists():
@@ -131,11 +130,13 @@ class PonishaSpider:
 
     def get_skills_from_db(self, skills_result):
         """create and get skills from db """
-        for skill in skills_result:
-            Skill.objects.update_or_create(name=skill.name, url=skill.url, website=self.website_instance)
-        # get skills obj for M2M relation
+        try:
+            for skill in skills_result:
+                Skill.objects.update_or_create(name=skill.name, url=skill.url, website=self.website_instance)
+        except Exception as e:
+            pass
         skills_query_obj =  Skill.objects.filter(name__in=skills_result, website=self.website_instance)
-
+        # get skills obj for M2M relation
         return skills_query_obj
     
     def get_category_from_db(self, category):
