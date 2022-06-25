@@ -1,25 +1,28 @@
 from django.contrib import admin
-from django.utils.html import format_html
+from import_export.admin import ImportExportModelAdmin,ExportActionModelAdmin
 from .models import Projects, Category, Skill, Employer, Freelancer, Websites
+from django.utils.html import format_html
 from taskjo.utils import jdatetime as jd
-# Register your models here.
+
+
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('name', 'website',)
     search_fields = ('name',)
     list_select_related = ('website',)
 
 @admin.register(Skill)
-class SkillAdmin(admin.ModelAdmin):
+class SkillAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('name', 'website',)
     search_fields = ('name',)
     list_select_related = ('website',)
 
+# TODO Update this part in next version
 admin.site.register(Employer)
 admin.site.register(Freelancer)
 
 @admin.register(Projects)
-class ProjectsAdmin(admin.ModelAdmin):
+class ProjectsAdmin(ImportExportModelAdmin, ExportActionModelAdmin, admin.ModelAdmin):
     def remaining_time_j(self, obj):
         return jd.pretty_jdatetime_format(obj.remaining_time)
 
@@ -50,8 +53,7 @@ class ProjectsAdmin(admin.ModelAdmin):
     )
     list_select_related = ('website',)
     search_fields = (
-        'title',)
-
+        'title','short_link')
 
 # admin.site.register(Websites)
 @admin.register(Websites)
