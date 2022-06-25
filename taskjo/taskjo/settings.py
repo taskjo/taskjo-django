@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'colorfield',
     'import_export',
     'django_render_partial',
+    'django_inlinecss',
 ]
 
 MIDDLEWARE = [
@@ -188,7 +189,6 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
-SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 
 MEDIA_URL = '/media/'
@@ -226,6 +226,18 @@ SMSIR_TEMPLATE_VERIFY = "your_template_code"
 SMSIR_USER_API_KEY = "your_api_key"
 SMSIR_SECRET_KEY = "your_secret_key"
 
+
+#Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'domain'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'server@email.com'
+EMAIL_HOST_PASSWORD = 'pass'
+RECIPIENT_ADDRESS=''
+DEFAULT_FROM_EMAIL = 'server@email.com'
+SERVER_EMAIL = 'server@email.com'
 
 try:
     from .local_settings import *
