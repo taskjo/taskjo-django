@@ -1,0 +1,70 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+{% block title %}تایید کد | تسکجو{% endblock %}
+{% block content %}
+
+
+    <!-- Content -->
+
+    <div class="authentication-wrapper authentication-basic px-4">
+      <div class="authentication-inner py-4">
+        <!--  Two Steps Verification -->
+        <div class="card">
+          <div class="card-body">
+            <!-- Logo -->
+            <div class="app-brand justify-content-center">
+              <a href="index-2.html" class="app-brand-link gap-2">
+                <span class="app-brand-logo demo">
+                  <img src="../../assets/img/logo/taskjo.svg" alt="">
+                </span>
+                <span class="app-brand-text demo h3 mb-0 fw-bold">تسکجو</span>
+              </a>
+            </div>
+            <!-- /Logo -->
+            <h4 class="mb-2 text-center">تایید کد شماره موبایل</h4>
+            <p class="text-start mb-4 text-center">
+              ما یک کد تایید به موبایل شما ارسال کردیم. کد ارسال شده را در فیلد زیر وارد کنید.
+              <span class="fw-bold d-block mt-2" dir="ltr">{{phone}}</span>
+              <!-- <a href="forgot-password.html">اصلاح شماره موبایل</a> -->
+            </p>
+            <p class="mb-0 fw-semibold">کد 6 رقمی امنیتی را وارد کنید</p>
+            <form id="twoStepsForm" method="POST">
+              {% csrf_token %}
+              <div class="mb-3">
+                <div class="auth-input-wrapper d-flex align-items-center justify-content-sm-between numeral-mask-wrapper">
+                  <input type="text" class="form-control auth-input h-px-50 text-center numeral-mask text-center h-px-50 mx-1 my-2" maxlength="1" autofocus>
+                  <input type="text" class="form-control auth-input h-px-50 text-center numeral-mask text-center h-px-50 mx-1 my-2" maxlength="1">
+                  <input type="text" class="form-control auth-input h-px-50 text-center numeral-mask text-center h-px-50 mx-1 my-2" maxlength="1">
+                  <input type="text" class="form-control auth-input h-px-50 text-center numeral-mask text-center h-px-50 mx-1 my-2" maxlength="1">
+                  <input type="text" class="form-control auth-input h-px-50 text-center numeral-mask text-center h-px-50 mx-1 my-2" maxlength="1">
+                  <input type="text" class="form-control auth-input h-px-50 text-center numeral-mask text-center h-px-50 mx-1 my-2" maxlength="1">
+                </div>
+                <!-- Create a hidden field which is combined by 3 fields above -->
+                <input type="hidden" name="otp_code">
+              </div>
+              <button class="btn btn-primary d-grid w-100 mb-3" type="submit">تایید کد</button>
+              <div class="text-center">
+                کد را دریافت نکردید؟
+                <a href="{% url 'resend' %}"> ارسال دوباره </a>
+              </div>
+            </form>
+            {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+          {% endif %}
+          </div>
+        </div>
+        <!-- / Two Steps Verification -->
+      </div>
+    </div>
+
+    <!-- / Content -->
+
+{% endblock content %}
+
+{% block footer_javascript_page %}
+<script src="{% static '/js/pages-auth-two-steps.js' %}"></script>
+{% endblock footer_javascript_page %}

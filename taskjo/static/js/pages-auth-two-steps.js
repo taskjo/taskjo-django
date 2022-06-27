@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     if (twoStepsForm) {
       const fv = FormValidation.formValidation(twoStepsForm, {
         fields: {
-          otp: {
+          otp_code: {
             validators: {
               notEmpty: {
                 message: 'لطفا OTP را وارد کنید'
@@ -61,12 +61,12 @@ document.addEventListener('DOMContentLoaded', function (e) {
         numeralMaskList.forEach(numeralMaskEl => {
           if (numeralMaskEl.value === '') {
             otpFlag = false;
-            twoStepsForm.querySelector('[name="otp"]').value = '';
+            twoStepsForm.querySelector('[name="otp_code"]').value = '';
           }
           otpVal = otpVal + numeralMaskEl.value;
         });
         if (otpFlag) {
-          twoStepsForm.querySelector('[name="otp"]').value = otpVal;
+          twoStepsForm.querySelector('[name="otp_code"]').value = otpVal;
         }
       };
       numeralMaskList.forEach(numeralMaskEle => {

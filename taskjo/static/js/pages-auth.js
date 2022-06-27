@@ -4,10 +4,11 @@
 
 'use strict';
 const formAuthentication = document.querySelector('#formAuthentication');
+const formPassword = document.querySelector('#formPassword');
 
 document.addEventListener('DOMContentLoaded', function (e) {
   (function () {
-    const phoneNumber = document.querySelector('#mobile')
+    const phoneNumber = document.querySelector('#username')
     // Phone Mask
     if (phoneNumber) {
       new Cleave(phoneNumber, {
@@ -22,11 +23,56 @@ document.addEventListener('DOMContentLoaded', function (e) {
           username: {
             validators: {
               notEmpty: {
-                message: 'لطفا نام کاربری را وارد کنید'
+                message: 'لطفا شماره موبایل خود را وارد کنید'
               },
               stringLength: {
-                min: 6,
-                message: 'نام کاربری باید بیش از 6 کاراکتر باشد'
+                min: 10,
+                max: 10,
+                message: 'شماره موبایل باید 10 رقم و بدون صفر اول باشد'
+              },
+              regexp: {
+                regexp: /^[0-9 ]+$/,
+                message: 'شماره موبایل باید فقط از نوع عدد باشد'
+              }
+            }
+          },
+          name: {
+            validators: {
+              notEmpty: {
+                message: 'لطفا نام خود را وارد کنید'
+              },
+              stringLength: {
+                max: 20,
+                message: 'نام باید کمتر از 20 کاراکتر باشد'
+              }
+            }
+          },
+          family: {
+            validators: {
+              notEmpty: {
+                message: 'لطفا نام خانوادگی خود را وارد کنید'
+              },
+              stringLength: {
+                max: 40,
+                message: 'نام خانوادگی باید کمتر از 40 کاراکتر باشد'
+              }
+            }
+          },
+          skill: {
+            validators: {
+              notEmpty: {
+                message: 'لطفا مهارت های خود را انتخاب کنید'
+              }
+            }
+          },
+          job: {
+            validators: {
+              notEmpty: {
+                message: 'لطفا موقعیت شغلی خود را انتخاب کنید'
+              },
+              stringLength: {
+                max: 40,
+                message: 'موقعیت شغلی باید کمتر از 40 کاراکتر باشد'
               }
             }
           },
@@ -36,8 +82,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
                 message: 'لطفا شماره موبایل خود را وارد کنید'
               },
               stringLength: {
-                min: 12,
-                max: 12,
+                min: 10,
+                max: 10,
                 message: 'شماره موبایل باید 10 رقم و بدون صفر اول باشد'
               },
               regexp: {
@@ -72,10 +118,10 @@ document.addEventListener('DOMContentLoaded', function (e) {
               notEmpty: {
                 message: 'لطفا رمز عبور خود را وارد کنید'
               },
-              stringLength: {
-                min: 8,
-                message: 'رمز عبور باید بیش از 8 کاراکتر باشد'
-              }
+              // stringLength: {
+              //   min: 8,
+              //   message: 'رمز عبور باید بیش از 8 کاراکتر باشد'
+              // }
             }
           },
           'confirm-password': {
@@ -99,6 +145,69 @@ document.addEventListener('DOMContentLoaded', function (e) {
             validators: {
               notEmpty: {
                 message: 'لطفا با قوانین و مقررات موافقت کنید'
+              }
+            }
+          }
+        },
+        plugins: {
+          trigger: new FormValidation.plugins.Trigger(),
+          bootstrap5: new FormValidation.plugins.Bootstrap5({
+            eleValidClass: '',
+            rowSelector: '.mb-3'
+          }),
+          submitButton: new FormValidation.plugins.SubmitButton(),
+
+          defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+          autoFocus: new FormValidation.plugins.AutoFocus()
+        },
+        init: instance => {
+          instance.on('plugins.message.placed', function (e) {
+            if (e.element.parentElement.classList.contains('input-group')) {
+              e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
+            }
+          });
+        }
+      });
+    }
+    if (formPassword) {
+      const fv = FormValidation.formValidation(formPassword, {
+        fields: {
+          'old-password': {
+            validators: {
+              notEmpty: {
+                message: 'لطفا رمز عبور فعلی خود را وارد کنید'
+              },
+              stringLength: {
+                min: 8,
+                message: 'رمز عبور باید بیش از 8 کاراکتر باشد'
+              }
+            }
+          },
+          password: {
+            validators: {
+              notEmpty: {
+                message: 'لطفا رمز عبور جدید خود را وارد کنید'
+              },
+              stringLength: {
+                min: 8,
+                message: 'رمز عبور باید بیش از 8 کاراکتر باشد'
+              }
+            }
+          },
+          'confirm-password': {
+            validators: {
+              notEmpty: {
+                message: 'لطفا رمز عبور جدید خود را وارد کنید'
+              },
+              identical: {
+                compare: function () {
+                  return formPassword.querySelector('[name="password"]').value;
+                },
+                message: 'رمز عبور جدید و تایید آن یکسان نیستند'
+              },
+              stringLength: {
+                min: 8,
+                message: 'رمز عبور باید بیش از 8 کاراکتر باشد'
               }
             }
           }
