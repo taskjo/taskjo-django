@@ -15,9 +15,9 @@
               <div class="card">
                 <div class="card-body">
                   <div class="app-brand justify-content-center">
-                    <a href="index-2.html" class="app-brand-link gap-2">
+                    <a href="{% url 'core:index' %}" class="app-brand-link gap-2">
                       <span class="app-brand-logo demo">
-                        <img src="../../assets/img/logo/taskjo.svg" alt="">
+                        <img src="{% static '/img/logo/taskjo.svg' %}" alt="">
                       </span>
                       <span class="app-brand-text demo h3 mb-0 fw-bold">تسکجو</span>
                     </a>
@@ -86,7 +86,7 @@
                   {% endif %}
                   <p class="text-center">
                     <span>حساب کاربری دارید؟</span>
-                    <a href="login.html">
+                    <a href="{% url 'login' %}">
                       <span>وارد شوید</span>
                     </a>
                   </p>
@@ -106,5 +106,6 @@
 {% endblock %}
 
 {% block footer_javascript_page %}
+<!-- <script src="{% static '/js/pages-auth.js' %}"></script>  -->
 <!-- <script src="{% static '/js/form-validation.js' %}"></script> -->
 {% endblock footer_javascript_page %}
