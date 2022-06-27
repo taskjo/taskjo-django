@@ -59,7 +59,7 @@ class VerifyView(VerifyMixin, FormView):
             messages.success(self.request,'You Verified Successfully. Now Login')
             return super().post(self, request, *args, **kwargs)
         else :
-            messages.warning(self.request,'Code entered is not valid.')
+            messages.warning(self.request,'کد وارد شده صحیح نمی باشد')
             return self.form_invalid(self.form_class)
 
     def get_context_data(self,**kwargs):
