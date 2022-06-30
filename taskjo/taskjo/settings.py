@@ -11,10 +11,11 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -25,20 +26,34 @@ SECRET_KEY = 'django-insecure-y_6=t9^w3_m#6x*!gntxnn=vgmpopov9d48p+ciw6e17vcxa0i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '*',
+    '127.0.0.1',
+    'taskjo.ir'
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'admin_interface',  # Third Party
+    'django.contrib.postgres',  # postgres
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Local apps
+    'accounts', # auth
     'core',
     'taskjo_ponisha',
+    'django_celery_beat',
+    # Third Party Packages
+    'colorfield',
+    'import_export',
+    'django_render_partial',
+    'django_inlinecss',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +64,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Custom user verify check middleware
+    'accounts.middleware.UserVerifyMiddleware'
 ]
 
 ROOT_URLCONF = 'taskjo.urls'
@@ -56,7 +73,7 @@ ROOT_URLCONF = 'taskjo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -65,6 +82,10 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+        'libraries':{
+            'jalai_format': 'core.templatetags.jalai_format', # template tag
+            
+            }
         },
     },
 ]
@@ -74,13 +95,35 @@ WSGI_APPLICATION = 'taskjo.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+# sqlite db
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+# TODO add environ ('',localhost)
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'db',
+        'USER': 'fake',
+        'PASSWORD': 'fake',
+        'HOST': 'localhost',
+        'PORT' : '5432'
     }
 }
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = ''
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+
 
 
 # Password validation
@@ -105,7 +148,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fa-ir'
 
 TIME_ZONE = 'UTC'
 
@@ -116,12 +160,86 @@ USE_L10N = True
 USE_TZ = True
 
 
+
+# Auth User Model
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+# Successful login redirect path
+LOGIN_REDIRECT_URL = '/'
+
+# Email Settings
+#EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+#EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
+
+# AUTH BACKENDS
+AUTHENTICATION_BACKENDS = [
+    #'django.contrib.auth.backends.ModelBackend',
+    'accounts.backend.CustomBackend',
+]
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    'static/',
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# TODO add environ ('',localhost)
+
+BROKER_URL = 'redis://localhost:6379'
+# BROKER_URL = 'redis://redis:6379' # docker service
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+# CELERY_RESULT_BACKEND = 'redis://redis:6379' # docker service
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Tehran'
+
+# celery setting is deprecated and scheduled for removal in version 6.0.0.
+accept_content = ['application/json']
+broker_url = 'redis://localhost:6379'
+result_backend = 'redis://localhost:6379'
+result_serializer = 'json'
+task_serializer = 'json'
+timezone = 'Asia/Tehran'
+
+SMSIR_URL_GET_TOKEN = "https://RestfulSms.com/api/Token"
+SMSIR_URL_ULTRA_FAST_SEND = "https://RestfulSms.com/api/UltraFastSend"
+SMSIR_TEMPLATE_VERIFY = "your_template_code"
+SMSIR_USER_API_KEY = "your_api_key"
+SMSIR_SECRET_KEY = "your_secret_key"
+
+
+#Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'domain'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'server@email.com'
+EMAIL_HOST_PASSWORD = 'pass'
+RECIPIENT_ADDRESS=''
+DEFAULT_FROM_EMAIL = 'server@email.com'
+SERVER_EMAIL = 'server@email.com'
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass

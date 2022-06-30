@@ -1,0 +1,50 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+{% block title %}خروج از حساب | تسکجو {% endblock %}
+
+{% block content %}
+
+    <!-- Content -->
+
+    <div class="container-xxl">
+      <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner py-4">
+          <div class="row">
+            <!-- FormValidation -->
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="app-brand justify-content-center">
+                    <a href="{% url 'core:index' %}" class="app-brand-link gap-2">
+                      <span class="app-brand-logo demo">
+                        <img src="{% static '/img/logo/taskjo.svg' %}" alt="">
+                      </span>
+                      <span class="app-brand-text demo h3 mb-0 fw-bold">تسکجو</span>
+                    </a>
+                  </div>
+                  <h4 class="mb-2 text-center">خروج از حساب</h4>
+                  <p class="mb-4 text-center">از اینکه امروز زمان با ارزشمند خودتان را در تسکجو گذراندید متشکریم</p>
+                  <p class="text-center">
+                    <a href="{% url 'core:index' %}">
+                        <span>برگشت به خانه</span>
+                    </a>
+                  </p>
+                  <p class="text-center">
+                    <a href="{% url 'login' %}">
+                        <span>ورود به حساب</span>
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- /FormValidation -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- / Content -->
+
+
+
+{% endblock %}

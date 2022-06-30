@@ -1,0 +1,95 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+{% block title %}ورود | تسکجو{% endblock %}
+
+{% block content %}
+    <!-- Content -->
+
+    <div class="container-xxl">
+        <div class="authentication-wrapper authentication-basic container-p-y">
+          <div class="authentication-inner py-4">
+            <!-- Register -->
+            <div class="card">
+              <div class="card-body">
+                <!-- Logo -->
+                <div class="app-brand justify-content-center">
+                  <a href="{% url 'core:index' %}" class="app-brand-link gap-2">
+                    <span class="app-brand-logo demo">
+                      <img src="{% static '/img/logo/taskjo.svg' %}" alt="">
+                    </span>
+                    <span class="app-brand-text demo h3 mb-0 fw-bold">تسکجو</span>
+                  </a>
+                </div>
+                <!-- /Logo -->
+                <h4 class="mb-2 text-center">به تسکجو خوش آمدید!</h4>
+                <p class="mb-4 text-center">لطفا وارد حساب خود شده و ماجراجویی را شروع کنید</p>
+  
+                <form id="formAuthentication" class="mb-3"  method="POST">
+                    {% csrf_token %}
+                  <div class="mb-3">
+                    <label for="username" class="form-label">شماره موبایل</label>
+                    <div class="input-group input-group-merge">
+                      <span class="input-group-text">IR (+98)</span>
+                      <input type="text" id="mobile" name="username" class="form-control text-start" dir="ltr" placeholder="9xx xxx xxxx" autofocus>
+                    </div>
+                  </div>
+                  <div class="mb-3 form-password-toggle">
+                    <div class="d-flex justify-content-between">
+                      <label class="form-label" for="password">رمز عبور</label>
+                      <a href="{% url 'password_reset' %}">
+                        <small>رمز عبور را فراموش کردید؟</small>
+                      </a>
+                    </div>
+                    <div class="input-group input-group-merge">
+                      <input type="password" id="password" class="form-control text-start" dir="ltr" name="password" placeholder="············" aria-describedby="password">
+                      <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="remember-me">
+                      <label class="form-check-label" for="remember-me"> مرا به خاطر بسپار! </label>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <button class="btn btn-primary d-grid w-100" type="submit">ورود</button>
+                  </div>
+                </form>
+                {% if form.errors %}
+                  {% for field in form %}
+                      {% for error in field.errors %}
+                          <div class="alert alert-danger">
+                              <strong>{{ error|escape }}</strong>
+                          </div>
+                      {% endfor %}
+                  {% endfor %}
+              
+                  {% for error in form.non_field_errors %}
+                      <div class="alert alert-danger">
+                          <strong>{{ error|escape }}</strong>
+                      </div>
+                  {% endfor %}
+                
+                {% endif %}
+                <p class="text-center">
+                  <span>کاربر جدید هستید؟</span>
+                  <a href="{% url 'login' %}">
+                    <span>یک حساب بسازید</span>
+                  </a>
+                </p>
+                
+              </div>
+            </div>
+            <!-- /Register -->
+          </div>
+        </div>
+      </div>
+      
+      <!-- / Content -->
+  
+
+{% endblock content %}
+
+{% block footer_javascript_page %}
+<script src="{% static '/js/pages-auth.js' %}"></script> 
+{% endblock footer_javascript_page %}

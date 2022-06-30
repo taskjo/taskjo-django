@@ -1,0 +1,111 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+{% block title %}ثبت نام | تسکجو{% endblock %}
+
+{% block content %}
+
+    <!-- Content -->
+
+    <div class="container-xxl">
+      <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner py-4">
+          <div class="row">
+            <!-- FormValidation -->
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="app-brand justify-content-center">
+                    <a href="{% url 'core:index' %}" class="app-brand-link gap-2">
+                      <span class="app-brand-logo demo">
+                        <img src="{% static '/img/logo/taskjo.svg' %}" alt="">
+                      </span>
+                      <span class="app-brand-text demo h3 mb-0 fw-bold">تسکجو</span>
+                    </a>
+                  </div>
+                  <h4 class="mb-2 text-center">ماجراجویی اینجا شروع می‌شود</h4>
+                  <p class="mb-4 text-center">مدیریت پروژه های خود را آسان و جذاب کنید!</p>
+                  <form id="formAuthentication" class="row g-3"  method="POST">
+                    <!-- Account Details -->
+                    {% csrf_token %}
+
+                    <div class="col-12 mb-3">
+                      <label class="form-label" for="mobile">شماره موبایل</label>
+                      <div class="input-group input-group-merge">
+                        <span class="input-group-text">IR (+98)</span>
+                        <input type="text" id="mobile" name="phone" class="form-control text-start" dir="ltr" placeholder="9xx xxx xxxx" autofocus>
+                      </div>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                      <div class="form-password-toggle">
+                        <label class="form-label" for="password">رمز عبور</label>
+                        <div class="input-group input-group-merge">
+                          <input class="form-control text-start" dir="ltr" type="password" id="password" name="password1" placeholder="············" aria-describedby="multicol-password2">
+                          <span class="input-group-text cursor-pointer" id="multicol-password2"><i class="bx bx-hide"></i></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                      <div class="form-password-toggle">
+                        <label class="form-label" for="confirm-password">تایید رمز عبور</label>
+                        <div class="input-group input-group-merge">
+                          <input class="form-control text-start" dir="ltr" type="password" id="confirm-password" name="password2" placeholder="············" aria-describedby="multicol-confirm-password2">
+                          <span class="input-group-text cursor-pointer" id="multicol-confirm-password2"><i class="bx bx-hide"></i></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="terms" name="terms">
+                        <label class="form-check-label" for="terms">
+                          من با
+                            <a href="javascript:void(0);">سیاست حریم خصوصی و قوانین تسکجو</a>
+                          موافقم.
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <button type="submit" name="submitButton" class="btn btn-primary w-100">عضویت</button>
+                    </div>
+                  </form>
+                  {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                  
+                  {% endif %}
+                  <p class="text-center">
+                    <span>حساب کاربری دارید؟</span>
+                    <a href="{% url 'login' %}">
+                      <span>وارد شوید</span>
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- /FormValidation -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- / Content -->
+
+
+
+{% endblock %}
+
+{% block footer_javascript_page %}
+<!-- <script src="{% static '/js/pages-auth.js' %}"></script>  -->
+<!-- <script src="{% static '/js/form-validation.js' %}"></script> -->
+{% endblock footer_javascript_page %}

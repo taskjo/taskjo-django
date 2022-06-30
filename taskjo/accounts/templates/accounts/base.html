@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" class="light-style" dir="rtl" data-theme="theme-default" data-assets-path="/static/"
+data-template="horizontal-menu-template">
+    <head>
+        <title>{% block title %}{% endblock title %}</title>
+        {% block head_favicon %}
+            <link rel="icon" type="image/png" href="{% static '/img/favicon/favicon.ico' %}">
+        {% endblock head_favicon %}
+        {% block head_meta %}
+            {% block head_meta_charset %}
+                <meta http-equiv="Content-Type"
+                      content="text/html; charset=utf-8" />
+                <meta charset="utf-8">
+                <meta name="viewport"
+                        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+            {% endblock head_meta_charset %}
+            {% block head_meta_contentlanguage %}
+                <meta http-equiv="Content-Language" value="en-US" />
+                <meta name="description" content="">
+            {% endblock head_meta_contentlanguage %}
+            {% block head_meta_viewport %}
+                <meta name="viewport"
+                      content="width=device-width, initial-scale=1.0">
+            {% endblock head_meta_viewport %}
+        {% endblock head_meta %}
+        {% block head_css %}
+            {% block head_css_site %}
+            <!-- Icons -->
+            <link rel="stylesheet" href="{% static '/vendor/fonts/boxicons.css' %}">
+            <link rel="stylesheet" href="{% static '/vendor/fonts/fontawesome.css' %}">
+            <link rel="stylesheet" href="{% static '/vendor/fonts/flag-icons.css' %}">
+
+            <!-- Core CSS -->
+            <link rel="stylesheet" href="{% static '/vendor/css/rtl/core.css' %}" class="template-customizer-core-css" >
+            <link rel="stylesheet" href="{% static '/vendor/css/rtl/theme-default.css' %}" class="template-customizer-theme-css">
+            <link rel="stylesheet" href="{% static '/css/demo.css' %}">
+            <link rel="stylesheet" href="{% static '/vendor/css/rtl/rtl.css' %}">
+
+            <!-- Vendors CSS -->
+            <link rel="stylesheet" href="{% static '/vendor/libs/perfect-scrollbar/perfect-scrollbar.css' %}">
+            <link rel="stylesheet" href="{% static '/vendor/libs/typeahead-js/typeahead.css' %}">
+            <link rel="stylesheet" href="{% static '/vendor/libs/formvalidation/dist/css/formValidation.min.css' %}">
+
+            <!-- Page CSS -->
+                <!-- Page -->
+            <link rel="stylesheet" href="{% static '/vendor/css/pages/page-auth.css' %}">
+            <!-- Helpers -->
+            <script src="{% static '/vendor/js/helpers.js' %}"></script>
+
+            <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js' %} in the <head> section -->
+            <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js' %}.  -->
+            <script src="{% static '/vendor/js/template-customizer.js' %}"></script>
+            <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+            <script src="{% static '/js/config.js' %}"></script>
+            {% endblock head_css_site %}
+            {% block head_css_section %}{% endblock head_css_section %}
+            {% block head_css_page %}{% endblock head_css_page %}
+        {% endblock head_css %}
+    </head>
+    <body>
+            {% block content %}
+                if you see this, something is wrong!
+            {% endblock content %}
+        {# Set of blocks that can be used to display JavaScript files #}
+        {% block footer_javascript %}
+        {% block footer_javascript_site %}
+        <!-- Core JS -->
+        <!-- build:js assets/vendor/js/core.js' %} -->
+        <script src="{% static '/vendor/libs/jquery/jquery.js' %}"></script>
+        <script src="{% static '/vendor/libs/popper/popper.js' %}"></script>
+        <script src="{% static '/vendor/js/bootstrap.js' %}"></script>
+        <script src="{% static '/vendor/libs/perfect-scrollbar/perfect-scrollbar.js' %}"></script>
+
+        <script src="{% static '/vendor/libs/hammer/hammer.js' %}"></script>
+
+        <!-- <script src="{% static '/vendor/libs/i18n/i18n.js' %}"></script> -->
+        <script src="{% static '/vendor/libs/typeahead-js/typeahead.js' %}"></script>
+
+        <script src="{% static '/vendor/js/menu.js' %}"></script>
+        <!-- endbuild -->
+
+        <!-- Vendors JS -->
+        <script src="{% static '/vendor/libs/formvalidation/dist/js/FormValidation.min.js' %}"></script>
+        <script src="{% static '/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js' %}"></script>
+        <script src="{% static '/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js' %}"></script>
+
+
+        <!-- Main JS -->
+        <script src="{% static '/js/main.js' %}"></script>
+
+        <!-- Page JS -->
+        <!-- # TODO add in needed page -->
+        <!-- <script src="{% static '/js/pages-auth.js' %}"></script> -->
+
+        {% endblock footer_javascript_site %}
+        {% block footer_javascript_section %}{% endblock footer_javascript_section %}
+        {% block footer_javascript_page %}{% endblock footer_javascript_page %}
+        {% endblock footer_javascript %}
+    </body>
+</html>
