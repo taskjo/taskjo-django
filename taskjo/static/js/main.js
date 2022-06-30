@@ -154,7 +154,8 @@ document.getElementById("layout-menu") && (isHorizontalLayout = document.getElem
                     cursor: "active",
                     suggestion: "suggestion d-flex justify-content-between px-3 py-2 w-100"
                 }
-            }, {
+            },
+             {
                 name: "pages",
                 display: "name",
                 limit: 5,

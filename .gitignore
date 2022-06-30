@@ -137,6 +137,5 @@ dmypy.json
 roadmap.txt
 taskjo/static_root
 taskjo/taskjo/local_settings.py
-*.html
 .env.dev
 *.dev

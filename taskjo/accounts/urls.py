@@ -3,6 +3,7 @@ from .views import SignUpView, VerifyView, CustomLoginView, ResendVerifyView
 from django.contrib.auth import views as auth_views
 from .forms import CustomPasswordResetForm
 
+app_name = 'accounts'
 urlpatterns = [
     path('signup/', SignUpView.as_view(), name='signup'),
     path('verify/', VerifyView.as_view(), name='verify'),
