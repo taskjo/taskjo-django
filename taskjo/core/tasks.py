@@ -20,43 +20,36 @@ User = get_user_model()
 
 @app.task
 def set_users_related_project():
-
-
-    users = User.objects.all()
+    """
+    Set up daily projects related to user skills.
+    """
+    users = User.objects.all() # TODO active and verified
     for user in users:
         user_projects = Projects.objects.filter(skills__in=user.skills.all()) # TODO created at today
         user.projects.set(user_projects)
         user.projects_count = user_projects.count()
         user.save()
 
-    pass
-
-def send_users_email():
+@app.task
+def send_users_email(subject="", html_template="", txt_template=""):
     """
-    if user is_verified and send_email and email != None => send count of today projects
+    end count of today projects, IF user is_verified and send_email and email != None => send count of today projects
     """
-
-
     users = User.objects.all()
-    plaintext = get_template('core/email.txt')
-    htmly     = get_template('core/email.html')
-
     for user in users:
         if user.email:
             ctx = { 
                 'name':user.first_name,
                 'count' : user.projects_count,
-                'today' : '2022/05/06'
             }
-            subject, from_email, to = 'اطلاع رسانی تعداد پروژه امروز', 'mx@taskjo.ir', user.email
-            # text_content = plaintext.render(ctx)
-            # html_content = htmly.render(ctx)
+            subject, from_email, to = 'اطلاع رسانی تعداد پروژه امروز', settings.EMAIL_HOST_USER, user.email
             html_content = render_to_string('core/email.html', ctx)               
             text_content = "" 
             msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
             msg.attach_alternative(html_content, "text/html")
             try:
                 msg.send()
+                print("email send")
             except Exception as e:
                 print(str(e))
 
