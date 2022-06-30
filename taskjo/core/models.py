@@ -8,10 +8,12 @@ class Websites(models.Model):
 
     name = models.CharField(verbose_name="نام سایت", max_length=100)        
     url = models.URLField(verbose_name="لینک سایت", max_length=100)        
-    # TODO compute the number of project in the website
-    # project_count = models.CharField(max_length=100) 
     is_active = models.BooleanField(verbose_name="فعال است", default=True)
-    # max_page =  models.IntegerField(verbose_name=" بیشترین تعداد صفحه جستجو", default=0, blank=True, null=True)       
+    max_page =  models.IntegerField(verbose_name=" بیشترین تعداد صفحه جستجو", default=0, blank=True, null=True)       
+
+    @property
+    def project_count(self):
+        return Projects.objects.filter(website__id=self.id).count()
 
     def __str__(self):
         return self.name 
@@ -24,8 +26,8 @@ class Category(models.Model):
 
     name = models.CharField(verbose_name="نام دسته بندی", max_length=100) 
     url = models.URLField(verbose_name="لینک دسته بندی", max_length=1024, null=True, blank=True)
-    # TODO check similar category
     website = models.ForeignKey(Websites, verbose_name="وبسایت",  on_delete=models.CASCADE, null=True)
+    # TODO check similar category
 
     def __str__(self): 
         return self.name
@@ -38,8 +40,8 @@ class Skill(models.Model):
 
     name = models.CharField(verbose_name="نام مهارت", max_length=255) 
     url = models.URLField(verbose_name="لینک مهارت", max_length=1024, null=True, blank=True)
-    # TODO check similar skill in all websites
     website = models.ForeignKey(Websites, verbose_name="وبسایت",  on_delete=models.CASCADE, null=True) 
+    # TODO check similar skill in all websites
     # TODO related to category 
 
     def __str__(self): 

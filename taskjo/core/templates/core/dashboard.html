@@ -1,0 +1,1803 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+
+{% block title %}
+داشبورد | تسکجو
+{% endblock title %}
+{% block head_css_section %}
+<link rel="stylesheet" href="{% static '/vendor/libs/swiper/swiper.css' %}">
+{% endblock head_css_section %}
+{% block head_css_page %}
+    <!-- Page CSS -->
+  <link rel="stylesheet" href="{% static '/vendor/css/pages/ui-carousel.css' %}">
+{% endblock head_css_page %}
+
+{% block content %}
+    <!-- Content -->
+
+    <div class="container-fluid flex-grow-1 container-p-y">
+        <!-- Layout Demo -->
+        <div>
+          <div class="row">
+            <div class="col-12 col-lg-4 mt-3 order-2 order-lg-1">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h5 class="card-title mb-3">پروژه های شناسایی شده برای شما</h5>
+                  <h1 class="display-6 fw-normal mb-0 primary-font" id="usr-max">{{ usr_proj_list.0.valuemax }}</h1>
+                </div>
+                <div class="card-body">
+                  <span class="d-inline-block lh-1-85 mb-2">مهارت‌های شما</span>
+                  <div class="progress progress-stacked mb-4" style="height: 8px">
+                    {% for proj in usr_proj_list %}
+                    <div class="progress-bar bg-{{ proj.class }}" role="progressbar" style="width: 0%" aria-valuenow="{{ proj.valuenow }}" aria-valuemin="0" aria-valuemax="{{ proj.valuemax }}"></div>
+                    {% endfor %}
+                  </div>
+                  <ul class="p-0 m-0 lh-1-85">
+                    {% for proj in usr_proj_list %}
+                    <li class="mb-2 d-flex justify-content-between">
+                      <div class="d-flex align-items-center me-3">
+                        <span class="badge badge-dot bg-{{ proj.class }} me-2"></span> {{ proj.name }}
+                      </div>
+                      <div class="d-flex gap-3">
+                        <span>{{ proj.valuenow }}</span>
+                        <span class="fw-semibold">{{ proj.valuenow }}%</span>
+                      </div>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4 mt-3 order-1 order-lg-2">
+              <div class="card h-100">
+                <img class="mx-auto mt-4" src="{% static '/img/logo/taskjo.svg' %}" alt="Card image cap" width="200">
+                <div class="card-body">
+                  <h1 class="card-title text-center">به تسکجو خوش آمدید</h1>
+                  <p class="card-text text-center">
+                    تسکجو، میزکار فریلنسری برای تمامی فریلنسرهای عزیز در هر زمینه و سبک کاری
+                  </p>
+                  <a href="#" class="btn btn-outline-primary d-flex justify-content-center">آموزش کار با تسکجو</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4 mt-3 order-3 order-lg-3">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">بازار کار مهارت‌های شما</h5>
+                </div>
+                <div class="card-body">
+                  <ul class="p-0 m-0">
+                    {% for proj in all_proj_list %}
+                    <li class="d-flex align-items-center mb-4 pb-2">
+                      <div class="avatar avatar-sm flex-shrink-0 me-3">
+                        <span class="avatar-initial rounded-circle bg-label-primary"><i class="bx {{ proj.class }}"></i></span>
+                      </div>
+                      <div class="d-flex flex-column w-100">
+                        <div class="d-flex justify-content-between mb-1">
+                          <span class="mb-1">{{ proj.name }}</span>
+                          <span class="text-muted">{{ proj.valuenow }} پروژه</span>
+                        </div>
+                        <div class="progress" style="height: 6px">
+                          <div class="progress-bar bg-primary" style="width: 10%" role="progressbar" aria-valuenow="{{ proj.valuenow }}" aria-valuemin="0" aria-valuemax="{{ proj.valuemax }}"></div>
+                        </div>
+                      </div>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="text-center p-1 bg-success text-white rounded">جدیدترین پروژه های مرتبط با مهارت‌های شما</h3>
+                  <div class="border-bottom py-2 d-flex justify-content-center">
+                    <ul class="nav nav-pills primary-font" id="pills-tab" role="tablist">
+                      <li class="nav-item">
+                        <button class="nav-link project-skill-tab active" id="pills-skill1-tab" data-bs-toggle="pill" data-bs-target="#pills-skill1" role="tab" aria-controls="pills-skill1" aria-selected="true">
+                          Php
+                        </button>
+                      </li>
+                      <li class="nav-item">
+                        <button class="nav-link project-skill-tab" id="pills-skill2-tab" data-bs-toggle="pill" data-bs-target="#pills-skill2" role="tab" aria-controls="pills-skill2" aria-selected="false">
+                          Python
+                        </button>
+                      </li>
+                      <li class="nav-item">
+                        <button class="nav-link" id="pills-skill3-tab" data-bs-toggle="pill" data-bs-target="#pills-skill3" role="tab" aria-controls="pills-skill3" aria-selected="false">
+                          Html
+                        </button>
+                      </li>
+                      <li class="nav-item">
+                        <button class="nav-link" id="pills-skill4-tab" data-bs-toggle="pill" data-bs-target="#pills-skill4" role="tab" aria-controls="pills-skill4" aria-selected="false">
+                          Css
+                        </button>
+                      </li>
+                      <li class="nav-item">
+                        <button class="nav-link" id="pills-skill5-tab" data-bs-toggle="pill" data-bs-target="#pills-skill5" role="tab" aria-controls="pills-skill5" aria-selected="false">
+                          Photoshop
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="tab-content" id="pills-tabContent">
+                  <div class="tab-pane fade show active" id="pills-skill1" role="tabpanel" aria-labelledby="pills-skill1-tab">
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="swiper-container" id="skill-1">
+                          <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="{% url 'core:profile' %}"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="swiper-pagination" id="swiper-pagination-1"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-3 mx-auto text-center">
+                      <a href="javascript:void(0);" class="btn btn-primary text-center">نمایش تمام پروژه های Php</a>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="pills-skill2" role="tabpanel" aria-labelledby="pills-skill2-tab">
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="swiper-container" id="skill-2">
+                          <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="swiper-pagination" id="swiper-pagination-2"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-3 mx-auto text-center">
+                      <a href="javascript:void(0);" class="btn btn-primary text-center">نمایش تمام پروژه های Python</a>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="pills-skill3" role="tabpanel" aria-labelledby="pills-skill3-tab">
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="swiper-container" id="skill-3">
+                          <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="swiper-pagination" id="swiper-pagination-3"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-3 mx-auto text-center">
+                      <a href="javascript:void(0);" class="btn btn-primary text-center">نمایش تمام پروژه های Html</a>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="pills-skill4" role="tabpanel" aria-labelledby="pills-skill4-tab">
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="swiper-container" id="skill-4">
+                          <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="swiper-pagination" id="swiper-pagination-4"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-3 mx-auto text-center">
+                      <a href="javascript:void(0);" class="btn btn-primary text-center">نمایش تمام پروژه های Css</a>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="pills-skill5" role="tabpanel" aria-labelledby="pills-skill5-tab">
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="swiper-container" id="skill-5">
+                          <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="swiper-slide">
+                              <div class="card">
+                                <div class="card-header primary-font">
+                                  <div class="d-flex align-items-start">
+                                    <div class="d-flex align-items-start">
+                                      <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/html-label.png" alt="Avatar" class="rounded-circle">
+                                      </div>
+                                      <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;" class="h5">طراحی وب سایت</a></h5>
+                                        <div class="client-info d-flex align-items-center text-nowrap">
+                                          <h6 class="mb-0 me-1">مشتری:</h6>
+                                          <span class="text-secondary">اولیور کوئین</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <div class="dropdown zindex-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                                          <li><a class="dropdown-item" href="javascript:void(0);"><i class="far fa-eye"></i>&nbsp; پروژه‌های مشابه</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0 text-secondary">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از</p>
+                                  <div class="mt-2 text-right">
+                                    <span class="badge bg-warning mt-1">وبسایت: پونیشا</span>
+                                    <span class="badge bg-warning mt-1">پیشنهاد: 20</span>
+                                    <span class="badge bg-warning mt-1">دسته بندی: طراحی وبسایت</span>
+                                    <span class="badge bg-primary mt-1">مهارت: php</span>
+                                  </div>
+                                </div>
+                                <div class="card-body border-top">
+                                  <div class="row">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal"> از 4,000,000 تومان / تا 10,000,000 تومان </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-secondary p-1 rounded">
+                                        <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> 3 ماه و 5 روز </span></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-12">
+                                      <div class="bg-success p-1 rounded">
+                                        <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="swiper-pagination" id="swiper-pagination-5"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-3 mx-auto text-center">
+                      <a href="javascript:void(0);" class="btn btn-primary text-center">نمایش تمام پروژه های Photoshop</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--/ Layout Demo -->
+      </div>
+      <!--/ Content -->
+{% endblock content %}
+
+{% block footer_javascript_section %}
+<!-- Vendors JS -->
+<script src="{% static '/vendor/libs/swiper/swiper.js' %}"></script>
+{% endblock footer_javascript_section %}
+
+{% block footer_javascript_page %}
+  <!-- Page JS -->    
+  <script src="{% static '/js/ui-carousel.js' %}"></script>
+  <script>
+    const collection = document.getElementsByClassName("progress-bar");
+    for (let i = 0; i < collection.length; i++) {
+      collection[i].style.width = collection[i].ariaValueNow + '%';
+    }
+    // document.getElementById("usr-max").innerHTML = "10";
+  </script>
+
+{% endblock footer_javascript_page %}
+
+
+
+<!-- #TOOD add detail -->

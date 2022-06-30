@@ -1,9 +1,11 @@
-import requests
-import logging
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
+import logging
+import requests
 import pytz
+
 from .models import Projects, Category, Skill, Employer, Freelancer, Websites
+
 logger = logging.getLogger(__name__)
 
 site_url = ''
