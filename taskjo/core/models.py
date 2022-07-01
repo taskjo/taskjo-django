@@ -94,7 +94,7 @@ class Projects(models.Model):
     price_min = models.IntegerField(verbose_name="حداقل قیمت", default=0)
     price_max = models.IntegerField(verbose_name="حداکثر قیمت",default=0)
     # TODO convert to int
-    budget = models.CharField(verbose_name="بودجه", max_length=100, default="0")
+    budget = models.DecimalField(verbose_name="بودجه",max_digits=12, decimal_places=0, default="0")
     
     state = models.SmallIntegerField(verbose_name="وضعیت", default=STATE_OPEN, editable=False, choices=ACTION_CHOICES)
     applicants_number = models.IntegerField(verbose_name="تعداد پیشنهاد", default=0)
@@ -106,7 +106,7 @@ class Projects(models.Model):
 
     website = models.ForeignKey(Websites,verbose_name="وبسایت",  on_delete=models.CASCADE, null=True, blank=True)
     employer = models.ForeignKey(Employer,verbose_name="کارفرما",  on_delete=models.CASCADE, null=True, blank=True)
-    categoriy = models.ForeignKey(Category,verbose_name="دسته بندی",  on_delete=models.CASCADE, null=True, blank=True)
+    category = models.ForeignKey(Category,verbose_name="دسته بندی",  on_delete=models.CASCADE, null=True, blank=True)
     skills = models.ManyToManyField(Skill,verbose_name="مهارت ها", blank=True)
     #TODO add freelancer and simliar projects
     freelancers = models.ManyToManyField(Freelancer,verbose_name="فریلسنرها", blank=True)

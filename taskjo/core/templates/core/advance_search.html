@@ -5,229 +5,141 @@
 {% block title %}
 جستجوی پیشرفته | تسکجو
 {% endblock title %}
-{% block content %}
-          <!-- Layout container -->
-          <div class="mt-3">
-            <div class="row">
-              <div class="col-12 col-xl-2 col-lg-9 col-md-6 col-sm-12">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-12 mb-4">
-                        <label for="website" class="form-label">وبسایت</label>
-                        <select id="website" class="select2 form-select" multiple>
-                          <optgroup label="وبسایت‌های داخلی">
-                            {% for website in websites %}
-                              <option value="{{ website.id }}">{{ website.name }}</option>
-                            {% endfor %}
-                          </optgroup>
-                          <!-- <optgroup label="وبسایت‌های خارجی">
-                            <option value="freelancer">freelancer</option>
-                            <option value="uplancer">uplancer</option>
-                          </optgroup> -->
-                        </select>
-                      </div>
-                      <div class="col-12 mb-4">
-                        <label for="category" class="form-label">دسته‌بندی</label>
-                        <select id="category" class="select2 form-select" multiple>
-                          {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.name }}</option>
-                          {% endfor %}
-                        </select>
-                      </div>
-                      <div class="col-12 mb-4">
-                        <label for="skill" class="form-label">مهارت</label>
-                        <select id="skill" class="select2 form-select" multiple>
-                            {% for skill in skills %}
-                              <option value="{{ skill.id }}">{{ skill.name }}</option>
-                            {% endfor %}
-                        </select>
-                      </div>
-                      <div class="col-12 mb-4">
-                        <label class="form-label">بازه قیمت</label>
-                        <!-- <input type="text" id="numeral-mask" class="form-control numeral-mask text-start" dir="ltr" placeholder="عدد وارد کنید"> -->
-                        <div class="input-group">
-                          <span class="input-group-text" dir="ltr">از</span>
-                          <input type="text" id="minimum-price" class="form-control numeral-mask text-start" dir="ltr" placeholder="حداقل قیمت">
-                          <span class="input-group-text">تومان</span>
-                        </div>
-                        <div class="input-group mt-2">
-                          <span class="input-group-text" dir="ltr">تا</span>
-                          <input type="text" id="maximum-price" class="form-control numeral-mask text-start" dir="ltr" placeholder="حداکثر قیمت">
-                          <span class="input-group-text">تومان</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 col-xl-10 col-lg-3 col-md-6 col-sm-12 mt-4 mt-md-0">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-12 col-md-6 col-lg-8 col-xl-9">
-                        <div class="input-group">
-                          <input type="text" id="user-input"  class="form-control" placeholder="جستجو در نام و توضیحات پروژه" aria-label="Recipient's username" aria-describedby="button-addon2">
-                          <button class="btn btn-outline-primary" type="button"><i id="search-icon" class="tf-icons bx bx-search"></i></button>
-                        </div>
-                      </div>
-                      <div class="col-12 col-md-6 col-lg-4 col-xl-3 mt-2 mt-md-0">
-                        <select  class="form-select" id="sort_by" aria-label="Default select example">
-                          <option selected="" value="">مرتب سازی براساس:</option>
-                          <option value="applicants_number">کمترین پیشنهاد</option>
-                          <option value="-applicants_number">بیشترین پیشنهاد</option>
-                          <option value="budget">کمترین بودجه</option>
-                          <option value="-budget">بیشترین بودجه</option>
-                        </select>
-                      </div>
-                    </div>
-                    <hr>  
-                      <div class="row" id="replaceable-content">
-                      {% include 'core/projects_partial_view.html'  %}
-                      </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                      <!-- # TODO page  -->
-                      <div class="col-12 d-flex justify-content-center">
-                        <nav aria-label="Page navigation">
-                          <ul class="pagination pagination-lg">
-                            <li class="page-item prev disabled">
-                              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-left"></i></a>
-                            </li>
-                            <li class="page-item active">
-                              <a class="page-link" href="javascript:void(0);">1</a>
-                            </li>
-                            <li class="page-item">
-                              <a class="page-link" href="javascript:void(0);">2</a>
-                            </li>
-                            <li class="page-item">
-                              <a class="page-link" href="javascript:void(0);">3</a>
-                            </li>
-                            <li class="page-item">
-                              <a class="page-link" href="javascript:void(0);">4</a>
-                            </li>
-                            <li class="page-item">
-                              <a class="page-link" href="javascript:void(0);">5</a>
-                            </li>
-                            <li class="page-item next">
-                              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i></a>
-                            </li>
-                          </ul>
-                        </nav>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
+{% block head_css_page %}
+<link rel="stylesheet" href="{% static '/vendor/libs/tagify/tagify.css' %}">
+{% endblock head_css_page %}
+
+
+{% block content %}
+          <!-- Content -->
+
+          <div class="container-fluid flex-grow-1 container-p-y">
+            <!-- Layout Demo -->
+            <div class="mt-3">
+              <div class="row">
+                <div class="col-12 col-xl-2 col-lg-9 col-md-6 col-sm-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-12 mb-4">
+                          <label for="website" class="form-label">وبسایت</label>
+                          <select id="website" class="select2 form-select" multiple>
+                            <optgroup label="وبسایت‌های داخلی">
+                              {% for website in websites %}
+                                <option value="{{ website.id }}">{{ website.name }}</option>
+                              {% endfor %}
+                            </optgroup>
+                            <!-- <optgroup label="وبسایت‌های خارجی">
+                              <option value="freelancer">freelancer</option>
+                              <option value="uplancer">uplancer</option>
+                            </optgroup> -->
+                          </select>
+                        </div>
+                        <div class="col-12 mb-4">
+                          <label for="category" class="form-label">دسته‌بندی</label>
+                          <select id="category" class="select2 form-select" multiple>
+                            {% for category in categories %}
+                              <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <div class="col-12 mb-4">
+                          <label for="skill" class="form-label">مهارت</label>
+                          <input id="skill" name="skills" class="form-control" placeholder="انتخاب مهارت">
+                        </div>
+                        <div class="col-12 mb-4">
+                          <label class="form-label">بازه قیمت</label>
+                          <!-- <input type="text" id="numeral-mask" class="form-control numeral-mask text-start" dir="ltr" placeholder="عدد وارد کنید"> -->
+                          <div class="input-group">
+                            <span class="input-group-text" dir="ltr">از</span>
+                            <input type="text" id="minimum-price" class="form-control numeral-mask text-start" dir="ltr" placeholder="حداقل قیمت">
+                            <span class="input-group-text">تومان</span>
+                          </div>
+                          <div class="input-group mt-2">
+                            <span class="input-group-text" dir="ltr">تا</span>
+                            <input type="text" id="maximum-price" class="form-control numeral-mask text-start" dir="ltr" placeholder="حداکثر قیمت">
+                            <span class="input-group-text">تومان</span>
+                          </div>
+                        </div>
+                        <div class="col-12 mb-4">
+                          <label class="form-label">صفحه</label>
+                          <div class="input-group mt-2">
+                            <a class="page-link" href='{% url "core:profile" %}?page={{ related_projects.next_page_number }}'><i class="tf-icon bx bx-chevrons-right"></i></a>
+                            <input type="number" value="1" id="page" class="form-control numeral-mask text-center" dir="ltr" placeholder="صفحه">
+                            <a class="page-link" href='{% url "core:profile" %}?page={{ related_projects.previous_page_number }}'><i class="tf-icon bx bx-chevrons-left"></i></a>
+                          </div>
+                        </div>
+                        <div class="col-12 d-flex justify-content-center">
+                          <nav aria-label="Page navigation">
+                            <ul class="pagination pagination-lg">
+                              <li class="page-item prev">
+                                <a class="page-link" href='{% url "core:profile" %}?page={{ related_projects.previous_page_number }}'><i class="tf-icon bx bx-chevrons-left"></i></a>
+                              </li>
+                                  <li class="page-item active">
+                                    <a class="page-link" href="?page={{forloop.counter}}">1</a>
+                                  </li>
+                                  <li class="page-item">
+                                    <a class="page-link" href="?page={{forloop.counter}}">2</a>
+                                  </li>
+                                  <li class="page-item">
+                                    <a class="page-link" href="?page={{forloop.counter}}">3</a>
+                                  </li>
+                              <li class="page-item next">
+                                <a class="page-link" href='{% url "core:profile" %}?page={{ related_projects.next_page_number }}'><i class="tf-icon bx bx-chevrons-right"></i></a>
+                              </li>
+                            </ul>
+                          </nav>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-xl-10 col-lg-3 col-md-6 col-sm-12 mt-4 mt-md-0">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-12 col-md-6 col-lg-8 col-xl-9">
+                          <div class="input-group">
+                            <input type="text" id="user-input"  class="form-control" placeholder="جستجو در نام و توضیحات پروژه" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <!-- <button class="btn btn-outline-primary" type="button" id="button-addon2"><i class="tf-icons bx bx-search"></i></button> -->
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 col-xl-3 mt-2 mt-md-0">
+                          <select class="form-select" id="sort_by" aria-label="Default select example">
+                            <option selected="" value="" >مرتب سازی براساس:</option>
+                            <option value="applicants_number">کمترین پیشنهاد</option>
+                            <option value="-applicants_number">بیشترین پیشنهاد</option>
+                            <option value="budget">کمترین بودجه</option>
+                            <option value="-budget">بیشترین بودجه</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div id="replaceable-content">
+                        {% include 'core/projects_partial_view.html'  %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+            <!--/ Layout Demo -->
           </div>
-    
-          <!--/ Layout container -->
-        </div>
-      </div>
-    
-      <!-- Overlay -->
-      <div class="layout-overlay layout-menu-toggle"></div>
-    
-      <!-- Drag Target Area To SlideIn Menu On Small Screens -->
-      <div class="drag-target"></div>
+          <!--/ Content -->
 {% endblock content %}
+
+{% block footer_javascript_section %}
+<!-- Vendors JS -->
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+<script src="{% static 'vendor/libs/bootstrap-select/bootstrap-select.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static '/vendor/libs/tagify/tagify.js' %}"></script>
+{% endblock footer_javascript_section %}
+
 
 {% block footer_javascript_page %}
 <script>
-const user_input = $("#user-input")
-const search_icon = $('#search-icon')
-const projects_div = $('#replaceable-content')
-const sort_by = $('#sort_by')
-const categories = $('#category')
-const skills = $('#skill')
-const website = $('#website')
-
-const endpoint = '/search/'
-const delay_by_in_ms = 700
-let scheduled_function = false
-
-let ajax_call = function (endpoint, request_parameters) {
-    $.getJSON(endpoint,request_parameters)
-        .done(response => {
-            // fade out the artists_div, then:
-               projects_div.fadeTo('slow', 0).promise().then(() => {
-                // replace the HTML contents
-                // artists_div.html(response['html_from_view'])
-                document.getElementById('replaceable-content').innerHTML = response['html_from_view']
-                // fade-in the div with new contents
-                projects_div.fadeTo('slow', 1)
-                // stop animating search icon
-                search_icon.removeClass('blink')
-            })
-        })
-        .fail(response => {
-            console.log("error")
-            console.log(response)
-        })
-}
-
-
-
-var init = function(){
-  var categories = document.getElementById('category');
-  var skills = document.getElementById('skill');
-  var website = document.getElementById('website');
-
-
-  var category_selected = [...categories.options]
-                    .filter(option => option.selected)
-                    .map(option => option.value);
-  var skills_selected = [...skills.options]
-                    .filter(option => option.selected)
-                    .map(option => option.value);
-  var websiteselected = [...website.options]
-                    .filter(option => option.selected)
-                    .map(option => option.value);
-    const request_parameters = {
-        q: user_input.val(), // value of user_input: the HTML element with ID user-input
-        skills : skills_selected,
-        websites:websiteselected,
-        categories:category_selected,
-        sort_by : sort_by.val(),
-    }
-
-    return request_parameters
-
-}
-
-$(document).ready(function(){
-  var request_parameters= init()
-    // call these methods on load
-  ajax_call(endpoint, request_parameters)
-});
-
-user_input.on('keyup', function () {
-
-    // console.log(request_parameters)
-    var request_parameters= init()
-
-    // start animating the search icon with the CSS class
-    search_icon.addClass('blink')
-
-    // if scheduled_function is NOT false, cancel the execution of the function
-    if (scheduled_function) {
-        clearTimeout(scheduled_function)
-    }
-
-    // setTimeout returns the ID of the function to be executed
-    scheduled_function = setTimeout(ajax_call, delay_by_in_ms, endpoint, request_parameters)
-})
-
-
-sort_by.change(function() {
-  var request_parameters= init()
-    // call these methods on load
-  ajax_call(endpoint, request_parameters)
-
-});
+  const skills = "{{ skills }}"; // get skills from context
 </script>
-
+<script src="{% static '/js/search-tagify.js' %}"></script>
 {% endblock footer_javascript_page %}

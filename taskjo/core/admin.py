@@ -45,9 +45,9 @@ class ProjectsAdmin(ImportExportModelAdmin, ExportActionModelAdmin, admin.ModelA
 
 
     list_display = (
-        'title', 'remaining_time_j', 'website', 'categoriy', 'clickable_short_link', 'budget_format',)
+        'title', 'remaining_time_j', 'website', 'category', 'clickable_short_link', 'budget_format',)
     list_filter = (
-        'categoriy',
+        'category',
         'skills',
         'website',
     )

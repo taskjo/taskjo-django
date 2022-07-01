@@ -1,7 +1,8 @@
+from django.conf import settings
+from django.db.models import Q
+from .models import Projects
 import json 
 import os
-from django.conf import settings
-from .models import Projects
 
 def convert_tagify_to_list(tagified_list):
     result_list = []
@@ -49,7 +50,7 @@ def compute_percentage(proj_list):
 def set_skills_class(class_type="",skills=[],index=0):
     all_class_list = ['bx-photo-album','bxl-php','bxl-microsoft','bx-code-block','bx-code']
     usr_class_list = ['primary','success','danger','info','primary']
-    if class_type is "bg":
+    if class_type == "bg":
         return  usr_class_list[index]
     print(index)
     return all_class_list[index]
@@ -62,3 +63,29 @@ def set_skills_class(class_type="",skills=[],index=0):
     #     my_json_obj = json.load(f)
     #     print(my_json_obj)
     # pass
+
+def build_search_query(request):
+    sort_by = '-id'
+    query_text = request.GET.get("q")
+    sort = request.GET.get("sort_by")
+    skills_ids = request.GET.getlist("skills[]") # get array of id
+    websties_ids = request.GET.getlist("websites[]")
+    category_ids = request.GET.getlist("categories[]")
+
+    qdict = {
+        'title__contains': query_text,
+        'skills__in': skills_ids,
+        'website__in': websties_ids,
+        'category__in': category_ids,
+    }
+    # filter out None values
+    not_none_parameters = {single_query: qdict.get(single_query) for single_query in qdict if qdict.get(single_query) != '' and qdict.get(single_query) != []}
+    filter_list = Q()
+    for item in not_none_parameters:
+        filter_list &= Q(**{item:not_none_parameters.get(item)})
+    # set description
+    if query_text:
+        filter_list |= Q(**{'description__contains':query_text})
+    if sort:
+        sort_by = sort
+    return filter_list,sort_by

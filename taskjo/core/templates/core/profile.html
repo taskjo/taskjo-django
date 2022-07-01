@@ -205,7 +205,6 @@
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const page_number = urlParams.get('page')
-        console.log(page_number);
         const TagifySkillsListEl = document.querySelector('#TagifySkillsList');
         if (urlParams.has('page')){
           click_event = new CustomEvent('click');

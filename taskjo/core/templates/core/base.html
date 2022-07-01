@@ -1,6 +1,8 @@
 {% load static %}
+{% load assets %}
+{% load user %}
 <!DOCTYPE html>
-<html lang="fa" class="light-style" dir="rtl" data-theme="theme-default" data-assets-path="/static/"
+<html lang="fa" class="light-style" dir="rtl" data-theme="theme-default" data-assets-path="{{ static|assets_path }}"
 data-template="horizontal-menu-template">
     <head>
         <title>{% block title %}Home {% endblock title %}</title>
@@ -126,8 +128,8 @@ data-template="horizontal-menu-template">
                           </div>
                         </div>
                         <div class="flex-grow-1">
-                          <span class="fw-semibold d-block lh-1">جان اسنو</span>
-                          <small>مدیر</small>
+                          <span class="fw-semibold d-block lh-1">{{ user|user_full_name }}</span>
+                          <small>{{ user|user_role }}</small>
                         </div>
                       </div>
                     </li>
@@ -135,13 +137,13 @@ data-template="horizontal-menu-template">
                       <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="pages-profile-user.html">
+                      <a class="dropdown-item" href="{% url 'core:profile' %}">
                         <i class="bx bx-user me-2"></i>
                         <span class="align-middle">پروفایل</span>
                       </a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="account-setting.html">
+                      <a class="dropdown-item" href="{% url 'core:settings' %}">
                         <i class="bx bx-cog me-2"></i>
                         <span class="align-middle">تنظیمات</span>
                       </a>
@@ -150,7 +152,7 @@ data-template="horizontal-menu-template">
                       <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="help.html">
+                      <a class="dropdown-item" href="{% url 'core:help' %}">
                         <i class="bx bx-help-circle me-2"></i>
                         <span class="align-middle">راهنما</span>
                       </a>
@@ -159,7 +161,7 @@ data-template="horizontal-menu-template">
                       <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="auth-login-cover.html" target="_blank">
+                      <a class="dropdown-item" href="{% url 'accounts:logout' %}" target="_blank">
                         <i class="bx bx-power-off me-2"></i>
                         <span class="align-middle">خروج</span>
                       </a>
@@ -185,14 +187,14 @@ data-template="horizontal-menu-template">
                     <ul class="menu-inner">
                         <!-- Dashboards -->
                         <li class="menu-item">
-                            <a href="dashboard.html" class="menu-link">
+                            <a href="{% url 'core:dashboard' %}" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-home"></i>
                                 <div data-i18n="Dashboards">داشبورد</div>
                             </a>
                         </li>
                         <!-- Advanced Search -->
                         <li class="menu-item">
-                            <a href="advanced-search.html" class="menu-link">
+                            <a href="{% url 'core:search' %}" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-search"></i>
                                 <div data-i18n="Dashboards">جستجوی پیشرفته</div>
                             </a>
@@ -220,11 +222,21 @@ data-template="horizontal-menu-template">
                   <!-- / Footer -->
 
                   <div class="content-backdrop fade"></div>
+                </div>
+                <!--/ Content wrapper -->
               </div>
-              <!--/ Content wrapper -->
+        
+              <!--/ Layout container -->
           </div>
-
-          <!--/ Layout container -->
+        </div>
+        
+          <!-- Overlay -->
+          <div class="layout-overlay layout-menu-toggle"></div>
+        
+          <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+          <div class="drag-target"></div>
+        
+          <!--/ Layout wrapper -->
 
         {# Set of blocks that can be used to display JavaScript files #}
         {% block footer_javascript %}
