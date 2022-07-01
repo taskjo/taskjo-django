@@ -33,6 +33,7 @@ UserModel = get_user_model()
 class DashboardPageView(LoginRequiredMixin, TemplateView):
     # login_url = '/login/'
     template_name = "core/dashboard.html"
+
     # add all project find in taskjo
     def get_context_data(self, *args, **kwargs):
         context = super(DashboardPageView, self).get_context_data(*args, **kwargs)
@@ -56,6 +57,7 @@ class ProfilePageView(LoginRequiredMixin, FormView):
 
     def post(self,request):
         """ Profile Form"""
+
         post = request.POST.copy()
         post['phone'] = request.user.phone
         profile_form = ProfileForm(post, instance=request.user)
@@ -69,7 +71,9 @@ class ProfilePageView(LoginRequiredMixin, FormView):
         return super(ProfilePageView, self).post(request)
 
     def get_context_data(self, *args, **kwargs):
+
         """ get Skills for tagify and pagination """
+
         context = super(ProfilePageView, self).get_context_data(*args, **kwargs)
 
         skills_list = Skill.objects.all().values('id','name',)
