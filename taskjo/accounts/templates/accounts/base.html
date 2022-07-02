@@ -1,6 +1,7 @@
 {% load static %}
+{% load assets %}
 <!DOCTYPE html>
-<html lang="fa" class="light-style" dir="rtl" data-theme="theme-default" data-assets-path="/static/"
+<html lang="fa" class="light-style" dir="rtl" data-theme="theme-default" data-assets-path="{{ static|assets_path }}"
 data-template="horizontal-menu-template">
     <head>
         <title>{% block title %}{% endblock title %}</title>

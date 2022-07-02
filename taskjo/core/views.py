@@ -24,7 +24,7 @@ from traceback import print_tb
 from unicodedata import category
 from urllib import request
 # local 
-from .forms import ProfileForm
+from .forms import ProfileForm, SettingsForm
 from .models import Projects, Skill, Websites,Category
 from .tasks import set_users_related_project,send_users_email
 from .utils import convert_tagify_to_list,create_dashboard_report, build_search_query
@@ -106,11 +106,25 @@ class ProfilePageView(LoginRequiredMixin, FormView):
         context.update(profile_dict)
         return context
 
-class SettingsPageView(LoginRequiredMixin, TemplateView):
+class SettingsPageView(LoginRequiredMixin, FormView):
+    form_class = ProfileForm
+    success_url = reverse_lazy('core:settings')
     template_name = "core/settings.html"
-    # TODO profile send email --- or notification or disable 
-    # TODO use FormView and change user model needed phone
+    def post(self,request):
+        """ Profile Form"""
+        post = request.POST.copy()
+        post['phone'] = request.user.phone
+        settings_form = SettingsForm(post, instance=request.user)
 
+        if settings_form.is_valid():
+            settings_form.save()
+
+        return super(SettingsPageView, self).post(request)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['send_email'] = self.request.user.send_email
+        return context
 class AdvanceSearchView(LoginRequiredMixin, TemplateView):
     template_name = "core/advance_search.html"
 
@@ -138,11 +152,10 @@ class ProjectPartialView(LoginRequiredMixin, TemplateView):
 
         projects = Projects.objects.filter().order_by('-id')[:8]
         page = self.request.GET.get('page')
-        print(page)
     
         if is_ajax_request:
             filter_list,sort_by = build_search_query(request)
-            projects = Projects.objects.filter(filter_list).order_by(sort_by)
+            projects = Projects.objects.filter(filter_list).order_by(sort_by).distinct()
             paginator = Paginator(projects, self.paginate_by)
             
 
@@ -160,9 +173,6 @@ class ProjectPartialView(LoginRequiredMixin, TemplateView):
             data_dict = {"html_from_view": html}
             return JsonResponse(data=data_dict, safe=False)
 
-            
-
-        
 
 class IndexPageView(TemplateView):
     template_name = "core/index.html"
