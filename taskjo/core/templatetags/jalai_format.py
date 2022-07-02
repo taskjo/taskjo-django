@@ -9,7 +9,14 @@ register = template.Library()
 
 @register.filter(name='jalali_date')
 def jalali_date(value):
-    return jd.pretty_jdatetime_format(value)
+    date = "undefined"
+    if value:
+        try:
+            date = jd.pretty_jdatetime_format(value)
+        except : 
+            date = jd.convert_to_jalali(value)
+    return date
+
 
 @register.filter(name='budget_format')
 def budget_format(value):

@@ -176,9 +176,6 @@
      console.log('invalid', e.detail);
      
    }
-   function myFunction() {
-    console.log("==================")
-   }
  
   
  
