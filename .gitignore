@@ -139,3 +139,4 @@ taskjo/static_root
 taskjo/taskjo/local_settings.py
 .env.dev
 *.dev
+taskjo/media

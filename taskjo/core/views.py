@@ -24,7 +24,7 @@ from traceback import print_tb
 from unicodedata import category
 from urllib import request
 # local 
-from .forms import ProfileForm, SettingsForm
+from .forms import ProfileForm, SettingsForm, UpdateImageForm
 from .models import Projects, Skill, Websites,Category
 from .tasks import set_users_related_project,send_users_email
 from .utils import convert_tagify_to_list,create_dashboard_report, build_search_query
@@ -59,7 +59,12 @@ class ProfilePageView(LoginRequiredMixin, FormView):
         post = request.POST.copy()
         post['phone'] = request.user.phone
         profile_form = ProfileForm(post, instance=request.user)
-        if profile_form.is_valid():
+        ImageForm = UpdateImageForm(request.POST, request.FILES, instance=request.user)
+
+        if ImageForm.is_valid():
+            ImageForm.save()
+
+        if profile_form.is_valid() and not request.FILES:
             skills_list = request.POST.get('skills', "")
             # get skills list to set M2M field
             skills_obj = Skill.objects.filter(id__in=convert_tagify_to_list(skills_list))
