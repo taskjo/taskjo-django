@@ -1,6 +1,7 @@
 {% extends 'core/base.html' %}
 {% load static %}
 {% load render_partial %}
+{% load user %}
 
 {% block title %} پروفایل | تسکجو{% endblock title %}
 {% block head_css_section %}
@@ -30,7 +31,7 @@
                 </div>
                 <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
                     <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
-                        <img src="{% static '/img/avatars/1.png' %}" alt="user image"
+                        <img src="{{ user|user_image }}" alt="user image"
                             class="d-block h-auto ms-0 ms-sm-4 rounded-3 user-profile-img">
                     </div>
                     <div class="flex-grow-1 mt-3 mt-sm-5">
@@ -76,25 +77,28 @@
         <div class="tab-content">
           <div class="tab-pane fade show active" id="account-setting" role="tabpanel">
             <div class="row">
+              <form method="post" enctype="multipart/form-data">
                 <div class="d-flex align-items-start align-items-sm-center gap-4">
-                    <img src="{% static '/img/avatars/1.png' %}" alt="user-avatar" class="d-block rounded"
+                    {% csrf_token %}
+                    <img src="{{ user|user_image }}" alt="user-avatar" class="d-block rounded"
                         height="100" width="100" id="uploadedAvatar">
                     <div class="button-wrapper">
-                        <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                        <label for="upload" class="btn btn-label-primary me-2 mb-4" tabindex="0">
                             <span class="d-none d-sm-block">ارسال تصویر جدید</span>
                             <i class="bx bx-upload d-block d-sm-none"></i>
-                            <input type="file" id="upload" class="account-file-input" hidden=""
+                            <input type="file" name="image" id="upload" class="account-file-input" hidden=""
                                 accept="image/png, image/jpeg">
                         </label>
-                        <button type="button" class="btn btn-label-secondary account-image-reset mb-4">
+                        <button type="submit" class="btn  btn-success account-image-reset mb-4">
                             <i class="bx bx-reset d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">بازنشانی</span>
+                            <span class="d-none d-sm-block">تنظیم</span>
                         </button>
-
+                  
                         <p class="mb-0">فایل‌های JPG، GIF یا PNG مجاز هستند. حداکثر اندازه فایل 800KB.
                         </p>
                     </div>
                 </div>
+              </form>
                 <hr class="my-4">
                 <form id="formAuthentication" method="POST" 
                     class="fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate">
