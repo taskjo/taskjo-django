@@ -1,0 +1,46 @@
+{% load inlinecss %}
+{% inlinecss "css/email.css" %}
+    
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+  </head>
+  {% block content %}
+  <body>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tbody>
+          <tr>
+              <td align="center">
+                  <table style="background-color:#f6f6f6;direction:rtl;text-align:right;border-radius:10px;border: solid 3px #f6f6f6;">
+                      <tbody>
+                          <tr>
+                              <th colspan="2" style="text-align:center;padding:5px">
+                                  <img style="max-width:150px;"  src="https://fadoo.s3.ir-thr-at1.arvanstorage.com/taskjo-fa.png" class="CToWUd">
+                              </th>
+                          </tr>
+                          <tr>
+                              <td style="text-align:right;padding:30px;vertical-align:top;min-width:200px">
+                                  <p>دوست عزیز {{ name }}،</p>
+                                  <p>تعداد پروژه جدید بر اساس مهارت شما:</p>
+                                  <h2 style="text-align:center"> {{ count }} </h2>
+                              </td>
+                              
+                              <td style="vertical-align:center">
+                                <a href="https://taskjo.ir">
+                                  <img style="max-width:45px;padding:0px 0px 30px 30px" src="https://fadoo.s3.ir-thr-at1.arvanstorage.com/go_to_page.jpg" class="CToWUd"></td>
+                                </a>
+                          </tr>
+                      </tbody>
+                  </table>
+              </td>
+          </tr>
+      </tbody>
+    </table>
+  </body>
+  {% endblock %}
+</html>
+{% endinlinecss %}

@@ -136,4 +136,7 @@ dmypy.json
 # Temporary
 roadmap.txt
 taskjo/static_root
-taskjo/media/uploads
+taskjo/taskjo/local_settings.py
+.env.dev
+*.dev
+taskjo/media
