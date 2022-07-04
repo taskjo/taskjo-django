@@ -1,0 +1,75 @@
+###########
+# BUILDER #
+###########
+
+# pull official base image
+FROM python:3.8 as builder
+
+# set work directory
+WORKDIR /usr/src/taskjo
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# install psycopg2 dependencies
+RUN apt-get update \
+    && apt-get install -y postgresql-server-dev-all gcc python3-dev musl-dev
+
+# lint
+RUN pip install --upgrade pip
+# RUN pip install flake8==3.9.2
+COPY . .
+# RUN flake8 --ignore=E501,F401 .
+
+# install dependencies
+COPY ./requirements.txt .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/taskjo/wheels -r requirements.txt
+
+
+#########
+# FINAL #
+#########
+
+# pull official base image
+FROM python:3.8
+
+# create directory for the taskjo user
+RUN mkdir -p /home/taskjo
+
+# create the taskjo user
+# RUN addgroup -S taskjo && adduser -S taskjo -G taskjo
+# TODO add root user
+RUN addgroup --system taskjo && adduser --system --group taskjo
+# RUN echo "taskjo ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/docker && chmod 0440 /etc/sudoers.d/docker
+
+# create the taskjoropriate directories
+ENV HOME=/home/taskjo
+ENV APP_HOME=/home/taskjo/web
+RUN mkdir $APP_HOME
+RUN mkdir $APP_HOME/staticfiles
+RUN mkdir $APP_HOME/mediafiles
+WORKDIR $APP_HOME
+
+# install dependencies
+# RUN apt-get update && apt-get -y install libpq
+COPY --from=builder /usr/src/taskjo/wheels /wheels
+COPY --from=builder /usr/src/taskjo/requirements.txt .
+RUN pip install --no-cache /wheels/*
+
+# copy entrypoint.prod.sh
+# COPY ./entrypoint.prod.sh .
+# RUN sed -i 's/\r$//g'  $APP_HOME/entrypoint.prod.sh
+# RUN chmod +x  $APP_HOME/entrypoint.prod.sh
+
+# copy project
+COPY . $APP_HOME
+
+# chown all the files to the taskjo user
+# RUN chown -R taskjo:taskjo $APP_HOME
+
+# change to the taskjo user
+USER taskjo
+
+# run entrypoint.prod.sh
+# ENTRYPOINT ["/home/taskjo/web/entrypoint.prod.sh"]
