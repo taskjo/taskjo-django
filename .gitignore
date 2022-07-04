@@ -135,3 +135,5 @@ dmypy.json
 
 # Temporary
 roadmap.txt
+taskjo/static_root
+taskjo/media/uploads
