@@ -3,7 +3,7 @@
 from django.urls import path
 
 from .views import AdvanceSearchView,ProjectPartialView,IndexPageView,AboutPageView, \
-    HelpPageView,ProfilePageView,DashboardPageView,SettingsPageView
+    HelpPageView,ProfilePageView,DashboardPageView,SettingsPageView,RelatedProjectView
 app_name = 'core'
 
 urlpatterns = [
@@ -18,4 +18,6 @@ urlpatterns = [
 
     path('search/', AdvanceSearchView.as_view(), name='search'),
     path('advance_search/', ProjectPartialView.as_view(), name='advance_search'),
+
+    path('user_projects/', RelatedProjectView.as_view(), name='user_projects'),
 ]
