@@ -15,7 +15,7 @@
             <div class="app-brand justify-content-center">
               <a href="{% url 'core:index' %}" class="app-brand-link gap-2">
                 <span class="app-brand-logo demo">
-                  <img src="../../assets/img/logo/taskjo.svg" alt="">
+                  <img src="{% static '/img/logo/taskjo.svg' %}" alt="">
                 </span>
                 <span class="app-brand-text demo h3 mb-0 fw-bold">تسکجو</span>
               </a>
@@ -45,7 +45,7 @@
               <button class="btn btn-primary d-grid w-100 mb-3" type="submit">تایید کد</button>
               <div class="text-center">
                 کد را دریافت نکردید؟
-                <a href="{% url 'resend' %}"> ارسال دوباره </a>
+                <a href="{% url 'accounts:resend' %}"> ارسال دوباره </a>
               </div>
             </form>
             {% if messages %}

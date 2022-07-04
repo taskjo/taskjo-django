@@ -52,7 +52,6 @@ def set_skills_class(class_type="",skills=[],index=0):
     usr_class_list = ['primary','success','danger','info','primary']
     if class_type == "bg":
         return  usr_class_list[index]
-    print(index)
     return all_class_list[index]
     # TODO search and set icon 
     # TODO save detail in db 

@@ -56,7 +56,7 @@ class CustomUser(AbstractUser):
     projects = models.ManyToManyField(Projects,verbose_name="پروژه ها", blank=True)
     role = models.CharField(max_length=100, verbose_name="موقعیت شغلی", null=True, blank=True)
 
-    # TODO profile image 
+    image = models.ImageField(upload_to ='uploads/', verbose_name=" عکس پروفایل", blank=True, null=True)
     # TODO next version
     # Teams - Country - City - Languages - Task Compiled - Projects Compiled - Connections
 

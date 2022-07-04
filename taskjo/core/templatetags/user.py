@@ -16,6 +16,8 @@ def user_role(user):
         return user.role
     return "programmer"
 
-# @register.filter(name='user_image')
-# def user_image():
-#     return user.image.link
+@register.filter(name='user_image')
+def user_image(user):
+    if user.image:
+        return user.image.url
+    return "/static/img/avatars/1.png"
