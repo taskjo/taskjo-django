@@ -36,4 +36,11 @@ class SettingsForm(forms.ModelForm):
             instance.send_email = False
         if commit:
             instance.save()
+
         return instance
+
+class UpdateImageForm(forms.ModelForm):
+    class Meta:
+        model = UserModel
+        fields = ('phone', 'image')
+        exclude = ('creation_date', 'phone', 'public', 'first_name', 'last_name','role' , 'email',)

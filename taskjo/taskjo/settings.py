@@ -38,6 +38,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     'admin_interface',  # Third Party
+    'accounts', # auth
     'django.contrib.postgres',  # postgres
     'django.contrib.admin',
     'django.contrib.auth',
@@ -46,7 +47,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Local apps
-    'accounts', # auth
     'core',
     'taskjo_ponisha',
     'django_celery_beat',

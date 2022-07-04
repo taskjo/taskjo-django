@@ -100,7 +100,7 @@
   TagifySkillsList.addTags(selected_skills_list);
 
   
-  
+
   $("#formAuthentication").submit( function(eventObj) {
     var data = TagifySkillsListEl.target.value
     if (data.length != 0){

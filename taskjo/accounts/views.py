@@ -14,7 +14,7 @@ UserModel = get_user_model()
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('accounts:login')
     template_name = 'accounts/signup.html'
 
 class VerifyMixin:
@@ -75,7 +75,7 @@ class ResendVerifyView(VerifyMixin, View):
             user.otp_counter += 1
             user.save()
             send_sms(user.phone, self.otp_code)
-        return HttpResponseRedirect(reverse_lazy('verify'))
+        return HttpResponseRedirect(reverse_lazy('accounts:verify'))
 
 class CustomLoginView(LoginView):
     redirect_authenticated_user = True

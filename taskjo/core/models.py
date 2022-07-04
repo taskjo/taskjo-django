@@ -95,6 +95,7 @@ class Projects(models.Model):
     price_max = models.IntegerField(verbose_name="حداکثر قیمت",default=0)
     # TODO convert to int
     budget = models.DecimalField(verbose_name="بودجه",max_digits=12, decimal_places=0, default="0")
+
     
     state = models.SmallIntegerField(verbose_name="وضعیت", default=STATE_OPEN, editable=False, choices=ACTION_CHOICES)
     applicants_number = models.IntegerField(verbose_name="تعداد پیشنهاد", default=0)

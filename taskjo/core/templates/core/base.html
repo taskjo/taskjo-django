@@ -71,7 +71,7 @@ data-template="horizontal-menu-template">
           <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4"> 
             <!-- TODO dashboard url -->
 
-            <a href="dashboard.html" class="app-brand-link gap-2">
+            <a href="{% url 'core:dashboard' %}" class="app-brand-link gap-2">
               <span class="app-brand-logo demo">
                 <img src="{% static 'img/logo/taskjo.svg' %}" width="40" alt="تسکجو">
               </span>
@@ -116,7 +116,7 @@ data-template="horizontal-menu-template">
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                   <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                      <img src="../../assets/img/avatars/1.png" alt class="rounded-circle">
+                      <img src="{{ user|user_image }}" alt class="rounded-circle">
                     </div>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
@@ -124,7 +124,7 @@ data-template="horizontal-menu-template">
                       <div class="d-flex">
                         <div class="flex-shrink-0 me-3">
                           <div class="avatar avatar-online">
-                            <img src="../../assets/img/avatars/1.png" alt class="rounded-circle">
+                            <img src="{{ user|user_image }}" alt class="rounded-circle">
                           </div>
                         </div>
                         <div class="flex-grow-1">

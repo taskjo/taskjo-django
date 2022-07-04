@@ -14,4 +14,4 @@ class UserVerifyMiddleware:
     def process_exception(self, request, exception):
         # Middleware handles UserNotVerified error
         if isinstance(exception, UserNotVerified):
-            return HttpResponseRedirect(reverse_lazy('resend'))
+            return HttpResponseRedirect(reverse_lazy('accounts:resend'))
