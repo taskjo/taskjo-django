@@ -1,0 +1,190 @@
+{% load static %}
+{% load jalai_format %}
+<div class="row mt-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="text-center p-1 bg-success text-white rounded">جدیدترین پروژه های مرتبط با مهارت‌های شما</h3>
+          <div class="border-bottom py-2 d-flex justify-content-center">
+            <ul class="nav nav-pills primary-font" id="pills-tab" role="tablist">
+                {% for skill in user_skills_list%}
+                 {% if forloop.first %}
+                    <li class="nav-item">
+                        <button class="nav-link project-skill-tab active" id="pills-skill{{forloop.counter}}-tab" data-bs-toggle="pill" data-bs-target="#pills-skill{{forloop.counter}}" role="tab" aria-controls="pills-skill{{forloop.counter}}" aria-selected="true">
+                          {{skill.name}}
+                        </button>
+                      </li>
+                    {%else%}
+                    <li class="nav-item">
+                        <button class="nav-link project-skill-tab" id="pills-skill{{forloop.counter}}-tab" data-bs-toggle="pill" data-bs-target="#pills-skill{{forloop.counter}}" role="tab" aria-controls="pills-skill{{forloop.counter}}" aria-selected="false">
+                            {{skill.name}}
+                        </button>
+                      </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <div class="tab-content" id="pills-tabContent">
+            {% for projects in related_project_list%}
+                {% if forloop.first %}
+                    <div class="tab-pane fade show active" id="pills-skill{{forloop.counter}}" role="tabpanel" aria-labelledby="pills-skill{{forloop.counter}}-tab">
+                        <div class="row">
+                        <div class="col-12">
+                            <div class="swiper-container" id="skill-{{forloop.counter}}">
+                            <div class="swiper-wrapper">
+                                {% for project in projects%}
+                                    <div class="swiper-slide">
+                                        <div class="card h-100">
+                                        <div class="card-header primary-font">
+                                            <div class="d-flex align-items-start">
+                                            <div class="d-flex align-items-start">
+                                                <div class="avatar me-3">
+                                                    <img src="{% static '/img/icons/brands/html-label.png' %}" alt="Avatar" class="rounded-circle">
+                                                </div>
+                                                <div class="me-2">
+                                                    <h5 class="mb-1"><a href="javascript:;" class="h5">{{project.title}}</a></h5>
+                                                </div>
+                                            </div>
+                                            <div class="ms-auto">
+                                                <div class="dropdown zindex-2">
+                                                <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                    <li><a class="dropdown-item bg-label-warning" href="javascript:UserProjects({{project.id}},'delete')"><i class="far "></i>&nbsp; حذف پروژه از لیست</a></li>
+                                                </ul>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body h-100">
+                                            <p class="mb-0 text-secondary">{{ project.description|truncate_chars:"0,50"}}</p>
+                                            <div class="mt-2 text-right">
+                                            <span class="badge bg-warning mt-1">وبسایت: {{ project.website}}</span>
+                                            <span class="badge bg-warning mt-1">پیشنهاد: {{ project.applicants_number}}</span>
+                                            <span class="badge bg-warning mt-1">دسته بندی: {{ project.categoriy}}</span>
+                                            {% for skill in project.skills.all %}
+                                                <span class="badge bg-primary mt-1">مهارت: {{ skill }}</span>
+                                            {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div class="card-body border-top">
+                                            <div class="row">
+                                            <div class="col-12 col-md-12">
+                                                <div class="bg-secondary p-1 rounded">
+                                                <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal">  {{ project.budget|budget_format }} </span></p>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            <div class="row mt-3">
+                                            <div class="col-12 col-md-12">
+                                                <div class="bg-secondary p-1 rounded">
+                                                <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> {{ project.remaining_time|jalali_date }} </span></p>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            <div class="row mt-3">
+                                            <div class="col-12 col-md-12">
+                                                <div class="bg-success p-1 rounded">
+                                                <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="swiper-pagination" id="swiper-pagination-{{forloop.counter}}"></div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                {%else%}
+                    <div class="tab-pane fade" id="pills-skill{{forloop.counter}}" role="tabpanel" aria-labelledby="pills-skill{{forloop.counter}}-tab">
+                        <div class="row">
+                        <div class="col-12">
+                            <div class="swiper-container" id="skill-{{forloop.counter}}">
+                            <div class="swiper-wrapper">
+                                {% for project in projects%}
+                                    <div class="swiper-slide">
+                                    <div class="card h-100">
+                                        <div class="card-header primary-font">
+                                        <div class="d-flex align-items-start">
+                                            <div class="d-flex align-items-start">
+                                            <div class="avatar me-3">
+                                                <img src="{% static '/img/icons/brands/html-label.png' %}" alt="Avatar" class="rounded-circle">
+                                            </div>
+                                            <div class="me-2">
+                                                <h5 class="mb-1"><a href="javascript:;" class="h5">{{project.title}}</a></h5>
+                                                <div class="client-info d-flex align-items-center text-nowrap">
+                                                    <!-- <h6 class="mb-0 me-1">مشتری:</h6>
+                                                    <span class="text-secondary">اولیور کوئین</span> -->
+                                                </div>
+                                            </div>
+                                            </div>
+                                            <div class="ms-auto">
+                                            <div class="dropdown zindex-2">
+                                                <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                    <li><a class="dropdown-item bg-label-warning" href="javascript:UserProjects({{project.id}},'delete')"><i class="far "></i>&nbsp; حذف پروژه از لیست</a></li>
+                                                </ul>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <div class="card-body h-100">
+                                        <p class="mb-0 text-secondary">{{ project.description|truncate_chars:"0,50"}}</p>
+                                        <div class="mt-2 text-right">
+                                            <span class="badge bg-warning mt-1">وبسایت: {{ project.website}}</span>
+                                            <span class="badge bg-warning mt-1">پیشنهاد: {{ project.applicants_number}}</span>
+                                            <span class="badge bg-warning mt-1">دسته بندی: {{ project.categoriy}}</span>
+                                            {% for skill in project.skills.all %}
+                                                <span class="badge bg-primary mt-1">مهارت: {{ skill }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        </div>
+                                        <div class="card-body border-top">
+                                        <div class="row">
+                                            <div class="col-12 col-md-12">
+                                            <div class="bg-secondary p-1 rounded">
+                                                <p class="mb-1 text-white text-center small">بودجه:<span class="text-white fw-normal">  {{ project.budget|budget_format }} </span></p>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-12 col-md-12">
+                                            <div class="bg-secondary p-1 rounded">
+                                                <p class="mb-1 text-white text-center small">زمان انجام:<span class="text-white fw-normal"> {{ project.remaining_time|jalali_date }} </span></p>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-12 col-md-12">
+                                            <div class="bg-success p-1 rounded">
+                                                <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="swiper-pagination" id="swiper-pagination-{{forloop.counter}}"></div>
+                            </div>
+                        </div>
+                        </div>
+                        <!-- <div class="mt-3 mx-auto text-center">
+                        <a href="javascript:void(0);" class="btn btn-primary text-center">نمایش تمام پروژه های Python</a>
+                        </div> -->
+                    </div>
+                {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>

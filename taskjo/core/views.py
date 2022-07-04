@@ -1,5 +1,5 @@
 # View
-from django.views.generic import TemplateView,FormView
+from django.views.generic import TemplateView,FormView,View
 # from django.views.generic.list import ListView
 # from django.http import HttpResponseRedirect
 # from django.urls import reverse
@@ -18,6 +18,7 @@ from django.core.paginator import PageNotAnInteger
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404
 # utils
 import json 
 # local 
@@ -27,24 +28,52 @@ from .utils import convert_tagify_to_list,create_dashboard_report, build_search_
 
 UserModel = get_user_model()
 
-# TODO return 5 last project for each skills(tab-slider)
 # TODO add save - delete related project View -> show dialog(reload) and use tamplete tag(id,span) for related_projects(search)
+class RelatedProjectView(LoginRequiredMixin, TemplateView):
+    template_name = ""
+    
+    def get(self, request):
+        is_ajax_request = request.headers.get("x-requested-with") == "XMLHttpRequest"
+        if is_ajax_request:
+            proj_id = self.request.GET.get('proj_id')
+            action = self.request.GET.get('action')
+            proj = get_object_or_404(Projects, id=proj_id)
+
+            if action == "add":
+                # TODO add all skills from project to user Or first skills
+                self.request.user.projects.add(proj)
+            elif action == "delete":
+                self.request.user.projects.remove(proj)
+            else:
+                pass
+
+            data_dict = {"response": True}
+            return JsonResponse(data=data_dict, safe=False)
+
 class DashboardPageView(LoginRequiredMixin, TemplateView):
-    # login_url = '/login/'
     template_name = "core/dashboard.html"
 
     # add all project find in taskjo
     def get_context_data(self, *args, **kwargs):
         context = super(DashboardPageView, self).get_context_data(*args, **kwargs)
         user_skills_list = self.request.user.skills.all()[:5]
+        # dshboard projects group by skills # TODO test order by m2m field and prefetch_related
+        related_project_list = []
+        for skill in user_skills_list:
+            related_project = Projects.objects.filter(skills__in=[skill.id],id__in=self.request.user.projects.all())[:5]
+            related_project_list.append(related_project)
+
 
         usr_proj_list,all_proj_list = create_dashboard_report(user_skills_list,self.request.user)
         
-        profile_dict = {
+        dashboard_dict = {
             'usr_proj_list': usr_proj_list,
             'all_proj_list': all_proj_list,
+            'related_project_list': related_project_list,
+            'user_skills_list': user_skills_list,
         }
-        context.update(profile_dict)
+
+        context.update(dashboard_dict)
         return context
 
 
