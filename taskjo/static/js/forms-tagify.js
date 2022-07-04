@@ -45,6 +45,7 @@
   let TagifySkillsList = new Tagify(TagifySkillsListEl, {
     tagTextProp: 'name', // very important since a custom template is used with this property as text. allows typing a "value" or a "name" to match input with whitelist
     enforceWhitelist: true,
+    maxTags: 5,
     skipInvalid: true, // do not remporarily add invalid tags
     dropdown: {
       closeOnSelect: false,
@@ -99,29 +100,16 @@
   TagifySkillsList.addTags(selected_skills_list);
 
   
-  
-  // TagifySkillsListEl.addEventListener('change', onChange)
-  
-  
-  // function onChange(e){
-  //   var data = e.target.value
-  //   if (data.length != 0){
-  //     data = JSON.parse(data)
-  //     const newArray= data.map(element => element.id);
-  //     // TagifySkillsList.selectAll()
-  //   }
-
-  // }
 
   $("#formAuthentication").submit( function(eventObj) {
     var data = TagifySkillsListEl.target.value
     if (data.length != 0){
       data = JSON.parse(data)
-      const newArray= data.map(element => element.id);
+      const selected_skills= data.map(element => element.id);
     }
     $("<input />").attr("type", "hidden")
         .attr("name", "skills")
-        .attr("value", newArray )
+        .attr("value", selected_skills )
         .appendTo("#formAuthentication");
     return true;
   });

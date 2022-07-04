@@ -1,0 +1,71 @@
+{% load jalai_format %}
+
+<head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="//bootswatch.com/yeti/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script>
+        function timedRefresh(timeoutPeriod) {
+	        // setTimeout("location.reload(true);",timeoutPeriod);
+        }
+    </script>
+
+</head>
+
+  
+  <body onload="JavaScript:timedRefresh(10000);">
+
+  <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1>Status Page</h1>
+        </div>
+      </div>
+      <div class="row clearfix">
+          <div class="col-md-12 column">
+              <div class="panel panel-success">
+                <div class="panel-heading">
+                  <h3 class="panel-title">
+                    All Systems Operational
+                    <!-- <small class="pull-right">Refreshed 39 minutes ago</small> -->
+                  </h3>
+                </div>                
+              </div>
+            
+
+              <div class="row clearfix">
+                  <div class="col-md-12 column">
+                      <div class="list-group">
+                         {% for task in tasks%}
+                          <div class="list-group-item">
+                              <h4 class="list-group-item-heading">
+                                  {{task.name}}
+                                  <a href="#"  data-toggle="tooltip" data-placement="bottom" title="Access website and use site API">
+                                    <!-- <i class="fa fa-question-circle"></i> -->
+                                  </a>
+                              </h4>
+                              <p class="list-group-item-text">
+                                {% if task.enabled %}
+                                  <span class="label label-success">Status : On</span>
+                                {% else %}
+                                  <span class="label label-danger">Status : Off</span>
+                                {% endif %}
+                                
+                                <span class="label label-primary">{{ task.last_run_at|jalali_date }} </span>
+                              </p>
+                          </div>
+                          {% endfor %}
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</body>

@@ -21,10 +21,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-y_6=t9^w3_m#6x*!gntxnn=vgmpopov9d48p+ciw6e17vcxa0i'
+SECRET_KEY = 'fake'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+#IF True --insecure in localy
 
 ALLOWED_HOSTS = [
     '*',
@@ -37,6 +38,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     'admin_interface',  # Third Party
+    'accounts', # auth
     'django.contrib.postgres',  # postgres
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,7 +47,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Local apps
-    'accounts', # auth
     'core',
     'taskjo_ponisha',
     'django_celery_beat',
@@ -84,6 +85,8 @@ TEMPLATES = [
             ],
         'libraries':{
             'jalai_format': 'core.templatetags.jalai_format', # template tag
+            'user': 'core.templatetags.user', # template tag
+            'assets': 'core.templatetags.assets', # template tag
             
             }
         },
@@ -187,7 +190,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     'static/',
 ]
-
+# staticfiles in nginx
 STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
 
 

@@ -42,10 +42,11 @@ class PonishaSpider:
                     project_dict = self.get_project_dict(project_selector=project)
                     project_result, skills_result = self.get_full_project_page(project_dict=project_dict)
                     skills_query_obj =  self.get_skills_from_db(skills_result)
-                        
                     project_obj = Projects.objects.create(**project_result)
                     project_obj.skills.set(skills_query_obj) # M2M relation
                 except Exception as e:
+                    if not "core_projects_short_link" in str(e):
+                        logger.error('Failed to create project: '+ str(e))
                     # TODO add uniqe constraint
                     # TODO add exception handler
                     self.is_repeat = False
@@ -65,8 +66,6 @@ class PonishaSpider:
         # TODO add skills
         # for skill in skills:
         #     url += 'skills[]=' + urllib.parse.quote(skill) + '&'    
-        print("---------------------------")
-        print(url)
         return url
 
     def get_project_list(self, response):
@@ -102,13 +101,13 @@ class PonishaSpider:
             'employer_username' : response.find('div',{"class": "clearfix pv"}).find_all('a')[0].get_text(strip=True),
             'employer_url' : response.find('div',{"class": "clearfix pv"}).find_all('a')[0]['href']
         }
-        project_dict['categoriy'] = {
+        project_dict['category'] = {
             'name' : response.find('div',{"class": "clearfix pv"}).find_all('a')[1].get_text(strip=True),
             'url' : response.find('div',{"class": "clearfix pv"}).find_all('a')[1]['href']
         }
 
         project_dict['employer'] = self.get_employer_from_db(project_dict['employer'])
-        project_dict['categoriy'] = self.get_category_from_db(project_dict['categoriy'])
+        project_dict['category'] = self.get_category_from_db(project_dict['category'])
         project_dict['website'] = self.website_instance
 
 

@@ -36,7 +36,7 @@
                   <div class="mb-3 form-password-toggle">
                     <div class="d-flex justify-content-between">
                       <label class="form-label" for="password">رمز عبور</label>
-                      <a href="{% url 'password_reset' %}">
+                      <a href="{% url 'accounts:password_reset' %}">
                         <small>رمز عبور را فراموش کردید؟</small>
                       </a>
                     </div>
@@ -73,7 +73,7 @@
                 {% endif %}
                 <p class="text-center">
                   <span>کاربر جدید هستید؟</span>
-                  <a href="{% url 'login' %}">
+                  <a href="{% url 'accounts:signup' %}">
                     <span>یک حساب بسازید</span>
                   </a>
                 </p>

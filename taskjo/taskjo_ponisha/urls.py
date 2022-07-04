@@ -1,11 +1,7 @@
-
-
 from django.urls import path
-
-from . import views
+from .views import StatusPageView
 
 app_name = 'taskjo_ponisha'
 urlpatterns = [
-    path('test/', views.index, name='index'),
-    # path('<int:pk>/', views.DetailView.as_view(), name='detail'),
+    path('status', StatusPageView.as_view(), name='ponisha_status'),
 ]

@@ -16,6 +16,6 @@ urlpatterns = [
     path('settings/', SettingsPageView.as_view(), name='settings'),
 
 
-    path('advance_search/', AdvanceSearchView.as_view(), name='advance_search'),
-    path('search/', ProjectPartialView.as_view(), name='search'),
+    path('search/', AdvanceSearchView.as_view(), name='search'),
+    path('advance_search/', ProjectPartialView.as_view(), name='advance_search'),
 ]

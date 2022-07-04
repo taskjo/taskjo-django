@@ -1,6 +1,8 @@
 # View
 from django.views.generic import TemplateView,FormView,View
 from django.views.generic.list import ListView
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 # search
 from django.db.models import Q
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, SearchHeadline
@@ -22,16 +24,16 @@ from traceback import print_tb
 from unicodedata import category
 from urllib import request
 # local 
-from .forms import ProfileForm
+from .forms import ProfileForm, SettingsForm, UpdateImageForm
 from .models import Projects, Skill, Websites,Category
 from .tasks import set_users_related_project,send_users_email
-from .utils import convert_tagify_to_list,create_dashboard_report
+from .utils import convert_tagify_to_list,create_dashboard_report, build_search_query
 
 UserModel = get_user_model()
 class DashboardPageView(LoginRequiredMixin, TemplateView):
     # login_url = '/login/'
     template_name = "core/dashboard.html"
-    # TODO add report like active skills projects count 
+
     # add all project find in taskjo
     def get_context_data(self, *args, **kwargs):
         context = super(DashboardPageView, self).get_context_data(*args, **kwargs)
@@ -54,11 +56,19 @@ class ProfilePageView(LoginRequiredMixin, FormView):
     paginate_by = 8
 
     def post(self,request):
+        """ Profile Form"""
+
         post = request.POST.copy()
         post['phone'] = request.user.phone
         profile_form = ProfileForm(post, instance=request.user)
-        if profile_form.is_valid():
+        ImageForm = UpdateImageForm(request.POST, request.FILES, instance=request.user)
+
+        if ImageForm.is_valid():
+            ImageForm.save()
+
+        if profile_form.is_valid() and not request.FILES:
             skills_list = request.POST.get('skills', "")
+            # get skills list to set M2M field
             skills_obj = Skill.objects.filter(id__in=convert_tagify_to_list(skills_list))
             this_user = UserModel.objects.get(id=request.user.id)
             profile_form.save()
@@ -66,15 +76,16 @@ class ProfilePageView(LoginRequiredMixin, FormView):
         return super(ProfilePageView, self).post(request)
 
     def get_context_data(self, *args, **kwargs):
+
+        """ get Skills for tagify and pagination """
+
         context = super(ProfilePageView, self).get_context_data(*args, **kwargs)
 
         skills_list = Skill.objects.all().values('id','name',)
         user_skills_list = self.request.user.skills.all().values('id','name',)
-
         user_related_projects = Projects.objects.all().order_by('-id') # UnorderedObjectListWarning
 
         paginator = Paginator(user_related_projects, self.paginate_by)
-
         page = self.request.GET.get('page')
 
         try:
@@ -84,8 +95,7 @@ class ProfilePageView(LoginRequiredMixin, FormView):
         except EmptyPage:
             user_projects = paginator.page(paginator.num_pages)
 
-            
-
+        # set value for tagify
         for skill in skills_list:
             skill['value']= skill['id']
         for skill in user_skills_list:
@@ -105,56 +115,73 @@ class ProfilePageView(LoginRequiredMixin, FormView):
         context.update(profile_dict)
         return context
 
-class SettingsPageView(LoginRequiredMixin, TemplateView):
+class SettingsPageView(LoginRequiredMixin, FormView):
+    form_class = ProfileForm
+    success_url = reverse_lazy('core:settings')
     template_name = "core/settings.html"
-    # TODO profile send email --- or notification or disable 
-    # TODO use FormView and change user model needed phone
+    def post(self,request):
+        """ Profile Form"""
+        post = request.POST.copy()
+        post['phone'] = request.user.phone
+        settings_form = SettingsForm(post, instance=request.user)
 
+        if settings_form.is_valid():
+            settings_form.save()
+
+        return super(SettingsPageView, self).post(request)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['send_email'] = self.request.user.send_email
+        return context
 class AdvanceSearchView(LoginRequiredMixin, TemplateView):
     template_name = "core/advance_search.html"
 
 
     def get_context_data(self, **kwargs):
+        # build skills for tagify
+        skills_list = Skill.objects.all().values('id','name',)
+        for skill in skills_list:
+            skill['value']= skill['id']
+
+
         context = super().get_context_data(**kwargs)
-        context['skills'] = Skill.objects.all()
+        context['projects'] = Projects.objects.filter().order_by('-id')[:8]
+        context['skills'] = json.dumps(list(skills_list)) # update for tagify by json
         context['websites'] = Websites.objects.all()
-        context['categories'] = Category.objects.all() # TODO update for tagify by json
+        context['categories'] = Category.objects.all() 
         return context
 
 class ProjectPartialView(LoginRequiredMixin, TemplateView):
+    paginate_by = 8
 
-    projects = Projects.objects.filter().order_by('-id')[:10]
 
     def get(self, request):
-        query_text = request.GET.get("q")
-        sort = request.GET.get("sort_by")
-
-
-        skills_ids = request.GET.getlist("skills[]") # skills is a list
-        websties_ids = request.GET.getlist("websites[]")
-        category_ids = request.GET.getlist("categories[]")
-        # TODO add query builder
-        print(skills_ids)
-        print(websties_ids)
-        print(category_ids)
-        print(query_text)
-        print(sort) #.order_by('-score', 'last_name') budget , applicants_number
         is_ajax_request = request.headers.get("x-requested-with") == "XMLHttpRequest"
+
+        projects = Projects.objects.filter().order_by('-id')[:8]
+        page = self.request.GET.get('page')
     
         if is_ajax_request:
-            if sort:
-                # projects = Projects.objects.filter().order_by(sort)[:10]
-                projects = Projects.objects.extra(select={'int_budget': 'CAST(budget AS INTEGER)'}).order_by('int_budget')[:10]
-            else:
-                projects = Projects.objects.filter().order_by('-id')[:10]
+            filter_list,sort_by = build_search_query(request)
+            projects = Projects.objects.filter(filter_list).order_by(sort_by).distinct()
+            paginator = Paginator(projects, self.paginate_by)
+            
+
+            try:
+                result_project = paginator.page(page)
+            except PageNotAnInteger:
+                result_project = paginator.page(1)
+            except EmptyPage:
+                result_project = paginator.page(paginator.num_pages)
+
             html = render_to_string(
                     template_name="core/projects_partial_view.html", 
-                    context={"projects": projects}
+                    context={"projects": result_project}
                 )
-
             data_dict = {"html_from_view": html}
+            return JsonResponse(data=data_dict, safe=False)
 
-        return JsonResponse(data=data_dict, safe=False)
 
 class IndexPageView(TemplateView):
     template_name = "core/index.html"
