@@ -2,7 +2,6 @@
 
 
 import json
-import logging
 from django.conf import settings
 import requests
 
@@ -28,6 +27,9 @@ def get_token():
 
 
 def send_sms(phone, otp):
+    if settings.FAKE_SMS :
+        print(f"the otp code : {otp} sent to {phone}")
+
     token = get_token()
     if token:
         header = {

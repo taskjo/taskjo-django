@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 import pytz
 
-from core.models import Projects, Category, Skill, Employer, Freelancer, Websites
+from core.models import Projects, Category, Skill, Employer, Websites
 # TODO add logger to this file
 # TODO add exception handler to this file
 # TODO add try except to this file
@@ -28,7 +28,6 @@ class PonishaSpider:
     def start_request(self, skills=[], category=None):
         self.is_repeat = True
         while self.is_repeat and self.page <= self.max_page:
-            # TODO test url
             url = self.build_url(skills=skills, category=category, page=self.page)
             # page = requests.get(self.site_search_url)
             page = requests.get(url)
@@ -47,8 +46,6 @@ class PonishaSpider:
                 except Exception as e:
                     if not "core_projects_short_link" in str(e):
                         logger.error('Failed to create project: '+ str(e))
-                    # TODO add uniqe constraint
-                    # TODO add exception handler
                     self.is_repeat = False
                     # break
             self.page += 1
@@ -90,7 +87,7 @@ class PonishaSpider:
         response = BeautifulSoup(page.content, 'html.parser')
 
         # TODO add project state
-        # TODO this part needed after write cleen function => set project is_active
+        # this part needed after write cleen function => set project is_active
         # project_dict['state'] = response.find('div',{"class": "border-rad-md"}).get_text(strip=True) # project state
 
         project_dict['short_link'] = response.find('share')['short-link']
@@ -119,12 +116,11 @@ class PonishaSpider:
         project_dict.pop('skills', None) # used get_skills_from_db
 
         return project_dict, skill_array    
-    # TODO remove this or change 
+
     def check_project_exist(self, project_obj):
         """ check if project exist in db """
         if Projects.objects.filter(short_link=project_obj['short_link']).exists():
             return False
-
         return True
 
     def get_skills_from_db(self, skills_result):

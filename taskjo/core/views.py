@@ -1,11 +1,11 @@
 # View
-from django.views.generic import TemplateView,FormView,View
-from django.views.generic.list import ListView
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.views.generic import TemplateView,FormView
+# from django.views.generic.list import ListView
+# from django.http import HttpResponseRedirect
+# from django.urls import reverse
 # search
-from django.db.models import Q
-from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, SearchHeadline
+# from django.db.models import Q
+# from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, SearchHeadline
 # auth
 from django.contrib.auth import get_user_model
 # mixin
@@ -20,16 +20,15 @@ from django.http import JsonResponse
 from django.urls import reverse_lazy
 # utils
 import json 
-from traceback import print_tb
-from unicodedata import category
-from urllib import request
 # local 
 from .forms import ProfileForm, SettingsForm, UpdateImageForm
 from .models import Projects, Skill, Websites,Category
-from .tasks import set_users_related_project,send_users_email
 from .utils import convert_tagify_to_list,create_dashboard_report, build_search_query
 
 UserModel = get_user_model()
+
+# TODO return 5 last project for each skills(tab-slider)
+# TODO add save - delete related project View -> show dialog(reload) and use tamplete tag(id,span) for related_projects(search)
 class DashboardPageView(LoginRequiredMixin, TemplateView):
     # login_url = '/login/'
     template_name = "core/dashboard.html"
@@ -134,6 +133,7 @@ class SettingsPageView(LoginRequiredMixin, FormView):
         context = super().get_context_data(**kwargs)
         context['send_email'] = self.request.user.send_email
         return context
+# TODO add pagination
 class AdvanceSearchView(LoginRequiredMixin, TemplateView):
     template_name = "core/advance_search.html"
 
@@ -151,7 +151,8 @@ class AdvanceSearchView(LoginRequiredMixin, TemplateView):
         context['websites'] = Websites.objects.all()
         context['categories'] = Category.objects.all() 
         return context
-
+# TODO Fix pagination Or change search method like filter.py and filter form
+# use max_page input 
 class ProjectPartialView(LoginRequiredMixin, TemplateView):
     paginate_by = 8
 

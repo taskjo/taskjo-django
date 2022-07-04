@@ -1,3 +1,4 @@
+# TODO complete this readme
 # ![Taskjo Logo](http://favicon.png) Taskjo-Django
 
 

@@ -54,7 +54,7 @@ def set_skills_class(class_type="",skills=[],index=0):
         return  usr_class_list[index]
     return all_class_list[index]
     # TODO search and set icon 
-    # TODO save detail in db 
+    # TODO save class name(style) in db 
     # class type bg or bxl
     # skills array 
     # file_path = os.path.join(settings.BASE_DIR,"core", "boxicons.json")
@@ -84,7 +84,7 @@ def build_search_query(request):
         filter_list &= Q(**{item:not_none_parameters.get(item)})
     # set description
     if query_text:
-        filter_list |= Q(**{'description__contains':query_text})
+        filter_list |= Q(**{'description__contains':query_text}) # need review -> search_vector and rank 
     if sort:
         sort_by = sort
     return filter_list,sort_by

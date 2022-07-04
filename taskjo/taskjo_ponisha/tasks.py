@@ -1,6 +1,3 @@
-from celery import shared_task
-# from celery import task
-import time
 import logging
 from taskjo.celery import app
 from . import spider

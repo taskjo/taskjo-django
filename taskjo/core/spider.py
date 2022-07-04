@@ -1,10 +1,6 @@
-from bs4 import BeautifulSoup
-from datetime import datetime, timedelta
 import logging
-import requests
-import pytz
 
-from .models import Projects, Category, Skill, Employer, Freelancer, Websites
+from .models import Category, Skill, Employer, Websites
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +15,6 @@ class BaseSpider:
         self.site_search_url = site_serach_url
         self.max_page = 1
         self.page = 1
-        # TODO website instance
         self.website_instance = Websites.objects.get_or_create(name='ponisha', url=site_url)[0]
 
     def start_request(self, skills=[], category=None):

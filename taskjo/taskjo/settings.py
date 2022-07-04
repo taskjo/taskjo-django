@@ -87,7 +87,6 @@ TEMPLATES = [
             'jalai_format': 'core.templatetags.jalai_format', # template tag
             'user': 'core.templatetags.user', # template tag
             'assets': 'core.templatetags.assets', # template tag
-            
             }
         },
     },
@@ -228,6 +227,7 @@ SMSIR_URL_ULTRA_FAST_SEND = "https://RestfulSms.com/api/UltraFastSend"
 SMSIR_TEMPLATE_VERIFY = "your_template_code"
 SMSIR_USER_API_KEY = "your_api_key"
 SMSIR_SECRET_KEY = "your_secret_key"
+FAKE_SMS = True
 
 
 #Email

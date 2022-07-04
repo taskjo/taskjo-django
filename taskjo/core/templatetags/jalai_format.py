@@ -1,5 +1,3 @@
-import builtins
-from unittest.util import _MAX_LENGTH
 from django import template
 from taskjo.utils import jdatetime as jd
 

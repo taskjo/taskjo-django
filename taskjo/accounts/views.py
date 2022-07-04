@@ -5,7 +5,7 @@ from django.views.generic.edit import CreateView, FormView
 from django.contrib.auth.views import LoginView,PasswordResetView
 from django.contrib.auth import login as auth_login, get_user_model
 from .exceptions import UserNotVerified
-from pyotp import OTP,HOTP
+from pyotp import HOTP
 from django.contrib import messages
 from .gateways.sms import send_sms
 from .forms import CustomUserCreationForm, VerifyForm
@@ -96,6 +96,6 @@ class CustomLoginView(LoginView):
         else:
             return HttpResponseRedirect(self.get_success_url())
 
-# TODO FIX this
+# TODO Add rest password by sms otp 
 class CustomRestPasswordView(PasswordResetView):
     pass

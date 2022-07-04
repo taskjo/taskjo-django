@@ -1,16 +1,9 @@
-from celery import shared_task
-import time
 from taskjo.celery import app
-
-from django.core.mail import send_mail
 from django.conf import settings
 
 
 from django.core.mail import EmailMultiAlternatives
-from django.template.loader import get_template
 from django.template.loader import render_to_string
-from django.template import Context
-from django.core.mail import EmailMessage
 from django.contrib.auth import get_user_model
 
 from core.models import Projects
@@ -23,7 +16,7 @@ def set_users_related_project():
     """
     Set up daily projects related to user skills.
     """
-    users = User.objects.all() # TODO active and verified
+    users = User.objects.all() # TODO active and verified -> have skills
     for user in users:
         user_projects = Projects.objects.filter(skills__in=user.skills.all()) # TODO created at today
         user.projects.set(user_projects)
@@ -35,7 +28,7 @@ def send_users_email(subject="", html_template="", txt_template=""):
     """
     end count of today projects, IF user is_verified and send_email and email != None => send count of today projects
     """
-    users = User.objects.all()
+    users = User.objects.all() # TODO active and verified -> enable send_email
     for user in users:
         if user.email:
             ctx = { 
