@@ -36,6 +36,7 @@ class SettingsForm(forms.ModelForm):
             instance.send_email = False
         if commit:
             instance.save()
+
         return instance
 
 class UpdateImageForm(forms.ModelForm):
