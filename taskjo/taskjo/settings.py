@@ -241,6 +241,7 @@ EMAIL_HOST_PASSWORD = 'pass'
 RECIPIENT_ADDRESS=''
 DEFAULT_FROM_EMAIL = 'server@email.com'
 SERVER_EMAIL = 'server@email.com'
+N_DAYS_AGO = 2
 
 try:
     from .local_settings import *

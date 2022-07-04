@@ -28,7 +28,7 @@ from .utils import convert_tagify_to_list,create_dashboard_report, build_search_
 
 UserModel = get_user_model()
 
-# TODO add save - delete related project View -> show dialog(reload) and use tamplete tag(id,span) for related_projects(search)
+# TODO use tamplete tag(id,span) for related_projects(search)
 class RelatedProjectView(LoginRequiredMixin, TemplateView):
     template_name = ""
     
@@ -53,16 +53,18 @@ class RelatedProjectView(LoginRequiredMixin, TemplateView):
 class DashboardPageView(LoginRequiredMixin, TemplateView):
     template_name = "core/dashboard.html"
 
-    # add all project find in taskjo
+
     def get_context_data(self, *args, **kwargs):
         context = super(DashboardPageView, self).get_context_data(*args, **kwargs)
-        user_skills_list = self.request.user.skills.all()[:5]
+        user_skills_list = self.request.user.skills.all().order_by('-id')[:5]
         # dshboard projects group by skills # TODO test order by m2m field and prefetch_related
         related_project_list = []
         for skill in user_skills_list:
             related_project = Projects.objects.filter(skills__in=[skill.id],id__in=self.request.user.projects.all())[:5]
             related_project_list.append(related_project)
-
+            # TODO remove skills => project.count == 0
+            # if related_project.count() > 0:
+            #     related_project_list.append(related_project)
 
         usr_proj_list,all_proj_list = create_dashboard_report(user_skills_list,self.request.user)
         
@@ -111,7 +113,7 @@ class ProfilePageView(LoginRequiredMixin, FormView):
 
         skills_list = Skill.objects.all().values('id','name',)
         user_skills_list = self.request.user.skills.all().values('id','name',)
-        user_related_projects = Projects.objects.all().order_by('-id') # UnorderedObjectListWarning
+        user_related_projects = Projects.objects.filter(id__in=self.request.user.projects.all()).order_by('-id') # UnorderedObjectListWarning
 
         paginator = Paginator(user_related_projects, self.paginate_by)
         page = self.request.GET.get('page')
@@ -147,6 +149,7 @@ class SettingsPageView(LoginRequiredMixin, FormView):
     form_class = ProfileForm
     success_url = reverse_lazy('core:settings')
     template_name = "core/settings.html"
+
     def post(self,request):
         """ Profile Form"""
         post = request.POST.copy()
@@ -189,7 +192,7 @@ class ProjectPartialView(LoginRequiredMixin, TemplateView):
     def get(self, request):
         is_ajax_request = request.headers.get("x-requested-with") == "XMLHttpRequest"
 
-        projects = Projects.objects.filter().order_by('-id')[:8]
+        projects = Projects.objects.all().order_by('-id')[:8]
         page = self.request.GET.get('page')
     
         if is_ajax_request:
