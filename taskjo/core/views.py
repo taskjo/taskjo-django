@@ -24,7 +24,7 @@ import json
 # local 
 from .forms import ProfileForm, SettingsForm, UpdateImageForm
 from .models import Projects, Skill, Websites,Category
-from .utils import convert_tagify_to_list,create_dashboard_report, build_search_query
+from core.utils import utils
 
 UserModel = get_user_model()
 
@@ -65,7 +65,7 @@ class DashboardPageView(LoginRequiredMixin, TemplateView):
             # if related_project.count() > 0:
             #     related_project_list.append(related_project)
 
-        usr_proj_list,all_proj_list = create_dashboard_report(user_skills_list,self.request.user)
+        usr_proj_list,all_proj_list = utils.create_dashboard_report(user_skills_list,self.request.user)
         
         dashboard_dict = {
             'usr_proj_list': usr_proj_list,
@@ -97,7 +97,7 @@ class ProfilePageView(LoginRequiredMixin, FormView):
         if profile_form.is_valid() and not request.FILES:
             skills_list = request.POST.get('skills', "")
             # get skills list to set M2M field
-            skills_obj = Skill.objects.filter(id__in=convert_tagify_to_list(skills_list))
+            skills_obj = Skill.objects.filter(id__in=utils.convert_tagify_to_list(skills_list))
             this_user = UserModel.objects.get(id=request.user.id)
             profile_form.save()
             this_user.skills.set(skills_obj)
@@ -194,7 +194,7 @@ class ProjectPartialView(LoginRequiredMixin, TemplateView):
         page = self.request.GET.get('page')
     
         if is_ajax_request:
-            filter_list,sort_by = build_search_query(request)
+            filter_list,sort_by = utils.build_search_query(request)
             projects = Projects.objects.filter(filter_list).order_by(sort_by).distinct()
             paginator = Paginator(projects, self.paginate_by)
             

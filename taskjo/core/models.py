@@ -37,6 +37,7 @@ class Skill(models.Model):
     name = models.CharField(verbose_name="نام مهارت", max_length=255) 
     url = models.URLField(verbose_name="لینک مهارت", max_length=1024, null=True, blank=True)
     website = models.ForeignKey(Websites, verbose_name="وبسایت",  on_delete=models.CASCADE, null=True) 
+    skill_style_class = models.CharField(verbose_name="کلاس استایل مهارت", default="", max_length=30, null=True, blank=True)
     # TODO check similar skill in all websites
     # TODO related to category 
     class Meta:
