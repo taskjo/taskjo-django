@@ -46,7 +46,6 @@ def send_users_email(subject="", html_template="", txt_template=""):
             msg.attach_alternative(html_content, "text/html")
             try:
                 msg.send()
-                print("email send")
             except Exception as e:
                 print(str(e))
 

@@ -163,7 +163,7 @@ class SettingsPageView(LoginRequiredMixin, FormView):
         context = super().get_context_data(**kwargs)
         context['send_email'] = self.request.user.send_email
         return context
-# TODO add pagination
+
 class AdvanceSearchView(LoginRequiredMixin, TemplateView):
     template_name = "core/advance_search.html"
     paginate_by = 8
@@ -191,7 +191,7 @@ class AdvanceSearchView(LoginRequiredMixin, TemplateView):
         context['websites'] = Websites.objects.all()
         context['categories'] = Category.objects.all() 
         return context
-# TODO Fix pagination Or change search method like filter.py and filter form
+
 # use max_page input 
 class ProjectPartialView(LoginRequiredMixin, TemplateView):
     paginate_by = 8
