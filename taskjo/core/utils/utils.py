@@ -1,6 +1,6 @@
 from django.db.models import Q
 from core.models import Projects
-from .skill_class_finder import get_skill_class,BXL_DEFAULT
+from .skill_class_finder import BXL_DEFAULT
 import json 
 
 def convert_tagify_to_list(tagified_list):
@@ -51,10 +51,9 @@ def set_skills_class(class_type="",skill="",index=0):
     usr_class_list = ['primary','success','danger','info','primary']
 
     if class_type == "bx":
-        skill_class = get_skill_class(skill)
-        if skill_class != BXL_DEFAULT:
-            skill.skill_style_class = skill_class
-            skill.save()
+        skill_class = skill.skill_style_class
+        if skill_class == "":
+            skill_class = BXL_DEFAULT
         return skill_class
     if class_type == "bg":
         return  usr_class_list[index]

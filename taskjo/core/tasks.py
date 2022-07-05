@@ -1,13 +1,15 @@
-from taskjo.celery import app
-from django.conf import settings
-from datetime import datetime, timedelta, time
 
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.contrib.auth import get_user_model
 
-from core.models import Projects
+from django.conf import settings
+from django.db.models import Q
+from core.utils import skill_class_finder as skill_finder
+from core.models import Projects, Skill
+from taskjo.celery import app
 
+from datetime import datetime, timedelta, time
 User = get_user_model()
 
 @app.task
@@ -47,3 +49,13 @@ def send_users_email(subject="", html_template="", txt_template=""):
                 print("email send")
             except Exception as e:
                 print(str(e))
+
+@app.task
+def set_skill_class():
+    skills = Skill.objects.filter(Q(skill_style_class="") | Q(skill_style_class=skill_finder.BXL_DEFAULT))
+    for skill in skills:
+        skill_class = skill_finder.get_skill_class(skill)
+        if skill_class and skill_class != skill_finder.BXL_DEFAULT:
+            skill.skill_style_class = skill_class
+            skill.save()
+
