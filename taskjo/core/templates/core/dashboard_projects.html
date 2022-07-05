@@ -1,5 +1,6 @@
 {% load static %}
 {% load jalai_format %}
+{% load user %}
 <div class="row mt-4">
     <div class="col-12">
       <div class="card">
@@ -39,9 +40,10 @@
                                         <div class="card-header primary-font">
                                             <div class="d-flex align-items-start">
                                             <div class="d-flex align-items-start">
-                                                <div class="avatar me-3">
-                                                    <img src="{% static '/img/icons/brands/html-label.png' %}" alt="Avatar" class="rounded-circle">
-                                                </div>
+                                                    <div class="avatar avatar-sm flex-shrink-0 me-3">
+                                                        <span class="avatar-initial rounded-circle bg-label-primary"><i class="bx  bxl-php"></i></span>
+                                                        <!-- {{project.skills.first.website}} -->
+                                                    </div>
                                                 <div class="me-2">
                                                     <h5 class="mb-1"><a href="javascript:;" class="h5">{{project.title}}</a></h5>
                                                 </div>
@@ -52,7 +54,7 @@
                                                     <i class="bx bx-dots-vertical-rounded"></i>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end">
-                                                    <li><a class="dropdown-item bg-label-warning" href="javascript:UserProjects({{project.id}},'delete')"><i class="far "></i>&nbsp; حذف پروژه از لیست</a></li>
+                                                    <li><a class="dropdown-item fa fa-trash-alt" href="javascript:UserProjects({{project.id}},'delete')"><i class="far "></i>&nbsp; حذف پروژه از لیست</a></li>
                                                 </ul>
                                                 </div>
                                             </div>
@@ -67,6 +69,7 @@
                                             {% for skill in project.skills.all %}
                                                 <span class="badge bg-primary mt-1">مهارت: {{ skill }}</span>
                                             {% endfor %}
+                                            {{user|is_related_project:project.id}}
                                             </div>
                                         </div>
                                         <div class="card-body border-top">
@@ -87,7 +90,7 @@
                                             <div class="row mt-3">
                                             <div class="col-12 col-md-12">
                                                 <div class="bg-success p-1 rounded">
-                                                <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                                <a href="{{project.short_link}}"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
                                                 </div>
                                             </div>
                                             </div>
@@ -113,15 +116,11 @@
                                         <div class="card-header primary-font">
                                         <div class="d-flex align-items-start">
                                             <div class="d-flex align-items-start">
-                                            <div class="avatar me-3">
-                                                <img src="{% static '/img/icons/brands/html-label.png' %}" alt="Avatar" class="rounded-circle">
+                                                <div class="avatar avatar-sm flex-shrink-0 me-3">
+                                                    <span class="avatar-initial rounded-circle bg-label-primary"><i class="bx  bxl-php"></i></span>
                                             </div>
                                             <div class="me-2">
-                                                <h5 class="mb-1"><a href="javascript:;" class="h5">{{project.title}}</a></h5>
-                                                <div class="client-info d-flex align-items-center text-nowrap">
-                                                    <!-- <h6 class="mb-0 me-1">مشتری:</h6>
-                                                    <span class="text-secondary">اولیور کوئین</span> -->
-                                                </div>
+                                                <h5 class="mb-1"><a href="{{project.short_link}}" class="h5">{{project.title}}</a></h5>
                                             </div>
                                             </div>
                                             <div class="ms-auto">
@@ -130,7 +129,7 @@
                                                 <i class="bx bx-dots-vertical-rounded"></i>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end">
-                                                    <li><a class="dropdown-item bg-label-warning" href="javascript:UserProjects({{project.id}},'delete')"><i class="far "></i>&nbsp; حذف پروژه از لیست</a></li>
+                                                    <li><a class="dropdown-item fa fa-trash-alt" href="javascript:UserProjects({{project.id}},'delete')"><i class="far "></i>&nbsp; حذف پروژه از لیست</a></li>
                                                 </ul>
                                             </div>
                                             </div>
@@ -145,6 +144,7 @@
                                             {% for skill in project.skills.all %}
                                                 <span class="badge bg-primary mt-1">مهارت: {{ skill }}</span>
                                             {% endfor %}
+                                            {{user|is_related_project:project.id}}
                                         </div>
                                         </div>
                                         <div class="card-body border-top">
@@ -165,7 +165,7 @@
                                         <div class="row mt-3">
                                             <div class="col-12 col-md-12">
                                             <div class="bg-success p-1 rounded">
-                                                <a href="#"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
+                                                <a href="{{project.short_link}}"><p class="mb-1 text-white text-center small">نمایش پروژه</p></a>
                                             </div>
                                             </div>
                                         </div>

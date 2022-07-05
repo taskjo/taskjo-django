@@ -28,7 +28,6 @@ from .utils import convert_tagify_to_list,create_dashboard_report, build_search_
 
 UserModel = get_user_model()
 
-# TODO use tamplete tag(id,span) for related_projects(search)
 class RelatedProjectView(LoginRequiredMixin, TemplateView):
     template_name = ""
     
@@ -77,7 +76,6 @@ class DashboardPageView(LoginRequiredMixin, TemplateView):
 
         context.update(dashboard_dict)
         return context
-
 
 class ProfilePageView(LoginRequiredMixin, FormView):
     form_class = ProfileForm
@@ -214,7 +212,6 @@ class ProjectPartialView(LoginRequiredMixin, TemplateView):
                 )
             data_dict = {"html_from_view": html}
             return JsonResponse(data=data_dict, safe=False)
-
 
 class IndexPageView(TemplateView):
     template_name = "core/index.html"

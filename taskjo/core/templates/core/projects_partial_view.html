@@ -1,5 +1,6 @@
 {% load static %}
 {% load jalai_format %}
+{% load user %}
 {% if projects %}
 
 <div id="replaceable-content">
@@ -15,7 +16,7 @@
                   <img src="{% static 'img/icons/brands/html-label.png' %}" alt="Avatar" class="rounded-circle">
                 </div>
                 <div class="me-2">
-                  <h5 class="mb-1"><a href="javascript:;" class="h5">{{ project.title}}</a></h5>
+                  <h5 class="mb-1"><a href="{{project.short_link}}" class="h5">{{ project.title}}</a></h5>
                 </div>
               </div>
               <div class="ms-auto">
@@ -24,8 +25,8 @@
                     <i class="bx bx-dots-vertical-rounded"></i>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item bg-label-success" href="javascript:UserProjects({{project.id}},'add')"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
-                    <li><a class="dropdown-item bg-label-warning" href="javascript:UserProjects({{project.id}},'delete')"><i class="far "></i>&nbsp; حذف پروژه از لیست</a></li>
+                    <li><a class="dropdown-item fa fa-add" href="javascript:UserProjects({{project.id}},'add')"><i class="far fa-star"></i>&nbsp; نشان کردن پروژه</a></li>
+                    <li><a class="dropdown-item fa fa-trash-alt" href="javascript:UserProjects({{project.id}},'delete')"><i class="far "></i>&nbsp; حذف پروژه از لیست</a></li>
                   </ul>
                 </div>
               </div>
@@ -40,6 +41,7 @@
               {% for skill in project.skills.all %}
                 <span class="badge bg-primary mt-1">مهارت: {{ skill }}</span>
               {% endfor %}
+              {{user|is_related_project:project.id}}
             </div>
           </div>
           <div class="card-body border-top">
