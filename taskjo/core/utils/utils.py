@@ -62,19 +62,28 @@ def set_skills_class(class_type="",skill="",index=0):
 def build_search_query(request):
     sort_by = '-id'
     query_text = request.GET.get("q")
+    min_price = request.GET.get("min_price")
+    max_price = request.GET.get("max_price")
     sort = request.GET.get("sort_by")
     skills_ids = request.GET.getlist("skills[]") # get array of id
     websties_ids = request.GET.getlist("websites[]")
     category_ids = request.GET.getlist("categories[]")
-
+    
+    min_price = convert_budget_decimal(min_price)
+    max_price = convert_budget_decimal(max_price)
+    
     qdict = {
         'title__contains': query_text,
         'skills__in': skills_ids,
         'website__in': websties_ids,
         'category__in': category_ids,
+        'budget__gte': min_price,
+        'budget__lte': max_price
     }
     # filter out None values
-    not_none_parameters = {single_query: qdict.get(single_query) for single_query in qdict if qdict.get(single_query) != '' and qdict.get(single_query) != []}
+    not_none_parameters = {single_query: qdict.get(single_query) for single_query in qdict 
+        if qdict.get(single_query) != '' and qdict.get(single_query) != [] and qdict.get(single_query) != None}
+    
     filter_list = Q()
     for item in not_none_parameters:
         filter_list &= Q(**{item:not_none_parameters.get(item)})
@@ -84,3 +93,8 @@ def build_search_query(request):
     if sort:
         sort_by = sort
     return filter_list,sort_by
+
+def convert_budget_decimal(value):
+    budget = str(value).replace(",","")
+    if budget.isdigit():
+        return int(float(budget)*10)
