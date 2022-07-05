@@ -166,7 +166,7 @@ class SettingsPageView(LoginRequiredMixin, FormView):
 # TODO add pagination
 class AdvanceSearchView(LoginRequiredMixin, TemplateView):
     template_name = "core/advance_search.html"
-
+    paginate_by = 8
 
     def get_context_data(self, **kwargs):
         # build skills for tagify
@@ -174,9 +174,19 @@ class AdvanceSearchView(LoginRequiredMixin, TemplateView):
         for skill in skills_list:
             skill['value']= skill['id']
 
+        projects_obj = Projects.objects.all().order_by('-id')
+        paginator = Paginator(projects_obj, self.paginate_by)
+        page = self.request.GET.get('page')
+        try:
+            project_paginator = paginator.page(page)
+        except PageNotAnInteger:
+            project_paginator = paginator.page(1)
+        except EmptyPage:
+            project_paginator = paginator.page(paginator.num_pages)
+
 
         context = super().get_context_data(**kwargs)
-        context['projects'] = Projects.objects.filter().order_by('-id')[:8]
+        context['projects'] = project_paginator
         context['skills'] = json.dumps(list(skills_list)) # update for tagify by json
         context['websites'] = Websites.objects.all()
         context['categories'] = Category.objects.all() 
@@ -208,8 +218,12 @@ class ProjectPartialView(LoginRequiredMixin, TemplateView):
 
             html = render_to_string(
                     template_name="core/projects_partial_view.html", 
-                    context={"projects": result_project}
-                )
+                    context={
+                        'projects': result_project,
+                        'user': self.request.user,
+                        'max_page': result_project.paginator.num_pages
+                         }
+                    )
             data_dict = {"html_from_view": html}
             return JsonResponse(data=data_dict, safe=False)
 
