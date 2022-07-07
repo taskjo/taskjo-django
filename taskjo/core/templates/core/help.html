@@ -1,0 +1,215 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+
+{% block title %}
+صفحه اصلی | تسکجو
+{% endblock title %}
+{% block head_css_section %}
+<link rel="stylesheet" href="{% static '/vendor/libs/swiper/swiper.css' %}">
+<!-- Page CSS -->
+<link rel="stylesheet" href="{% static '/vendor/css/pages/page-help-center.css' %}">
+<link rel="stylesheet" href="{% static '/vendor/css/pages/page-faq.css' %}">
+{% endblock head_css_section %}
+{% block head_css_page %}
+    <!-- Page CSS -->
+  <link rel="stylesheet" href="{% static '/vendor/css/pages/ui-carousel.css' %}">
+{% endblock head_css_page %}
+
+{% block content %}
+    <!-- Content -->
+
+    <div class="container-fluid flex-grow-1 container-p-y">
+    <div class="faq-header d-flex flex-column justify-content-center align-items-center">
+        <img src="{% static '/img/astrobot/astrobot-2.png' %}" alt="" width="400" class="mt-2">
+        <h3 class="text-center zindex-1 secondary-font mt-3">چطور می‌توانیم کمکتان کنیم؟</h3>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Navigation -->
+        <div class="col-lg-3 col-md-4 col-12 mb-md-0 mb-3">
+        <div class="d-flex justify-content-between flex-column mb-2 mb-md-0">
+            <ul class="nav nav-align-left nav-pills flex-column lh-1-85">
+            <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#payment">
+                <i class="bx bx-credit-card faq-nav-icon me-1"></i>
+                <span class="align-middle">هزینه استفاده از تسکجو</span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#taskjoSearch">
+                <i class="bx bx-search faq-nav-icon me-1"></i>
+                <span class="align-middle">جستجو در تسکجو</span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#taskjoSettings">
+                <i class="bx bx-cog faq-nav-icon me-1"></i>
+                <span class="align-middle">تنظیمات</span>
+                </button>
+            </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /Navigation -->
+
+        <!-- FAQ's -->
+        <div class="col-lg-9 col-md-8 col-12">
+        <div class="tab-content py-0">
+            <div class="tab-pane fade show active" id="payment" role="tabpanel">
+            <div class="d-flex align-items-center mb-3 gap-3">
+                <div>
+                <span class="badge bg-label-primary rounded-2 p-2 mt-1">
+                    <i class="bx bx-credit-card fs-3 lh-1"></i>
+                </span>
+                </div>
+                <div>
+                <h5 class="mb-0">
+                    <span class="align-middle">هزینه استفاده از تسکجو</span>
+                </h5>
+                <span class="lh-1-85">دریافت راهنمایی برای پرداخت</span>
+                </div>
+            </div>
+            <div id="accordionPayment" class="accordion accordion-header-primary">
+                <div class="card accordion-item active">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true" data-bs-target="#accordionPayment-1" aria-controls="accordionPayment-1">
+                        هزینه استفاده از تسکجو 
+                    </button>
+                </h2>
+
+                <div id="accordionPayment-1" class="accordion-collapse collapse show">
+                    <div class="accordion-body lh-2">
+                        تسکجو پروژه متن باز و کاملا رایگان است. میتوانید با حمایت مالی باعث دلگرمی تیم توسعه باشید :)
+                    </div>
+                </div>
+                </div>
+
+                <!-- <div class="card accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionPayment-2" aria-controls="accordionPayment-2">
+                    لورم ایپسوم متن ساختگی با تولید
+                    </button>
+                </h2>
+                <div id="accordionPayment-2" class="accordion-collapse collapse">
+                    <div class="accordion-body lh-2">
+                    لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای
+                    </div>
+                </div>
+                </div> -->
+            </div>
+            </div>
+            <div class="tab-pane fade" id="taskjoSearch" role="tabpanel">
+            <div class="d-flex align-items-center mb-3 gap-3">
+                <div>
+                <span class="badge bg-label-primary rounded-2 p-2 mt-1">
+                    <i class="bx bx-search fs-3 lh-1"></i>
+                </span>
+                </div>
+                <div>
+                <h5 class="mb-0"><span class="align-middle">جستجو در تسکجو </span></h5>
+                <span class="lh-1-85">دریافت راهنمایی برای جستجو در تسکجو</span>
+                </div>
+            </div>
+            <div id="accordionCancellation" class="accordion accordion-header-primary">
+                <div class="card accordion-item active">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true" data-bs-target="#accordionCancellation-1" aria-controls="accordionCancellation-1">
+                        جستجو پیشرفته تسکجو 
+                    </button>
+                </h2>
+
+                <div id="accordionCancellation-1" class="accordion-collapse collapse show">
+                    <div class="accordion-body lh-2">
+                    <p>
+                        امکان جستجو در عنوان - توضیحات                        
+                    </p>
+                    <p class="mb-0">
+                        فیلتر بر اساس مهارت - دسته بندی - سایت همچنین مرتب سازی بر اساس تعداد پیشنهاد و هزینه
+                    </p>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div class="tab-pane fade" id="taskjoSettings" role="tabpanel">
+            <div class="d-flex align-items-center mb-3 gap-3">
+                <div>
+                <span class="badge bg-label-primary rounded-2 p-2 mt-1">
+                    <i class="bx bx-cog fs-3 lh-1"></i>
+                </span>
+                </div>
+                <div>
+                <h5 class="mb-0">
+                    <span class="align-middle">تنظیمات</span>
+                </h5>
+                <span class="lh-1-85">دریافت راهنمایی برای تنظیمات تسکجو</span>
+                </div>
+            </div>
+            <div id="accordionProduct" class="accordion accordion-header-primary">
+                <div class="card accordion-item active">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true" data-bs-target="#accordionProduct-1" aria-controls="accordionProduct-1">
+                        ارسال ایمیل
+                    </button>
+                </h2>
+
+                <div id="accordionProduct-1" class="accordion-collapse collapse show">
+                    <div class="accordion-body lh-2">
+                        تسکجو روزانه تعداد جدیدترین پروژه ها بر اساس مهارت شما به شما ایمیل میکند
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+        <!-- /FAQ's -->
+    </div>
+
+    <!-- Contact -->
+    <div class="row mt-5">
+        <div class="col-12 text-center mb-4">
+        <div class="badge bg-label-primary">سوالی دارید؟</div>
+        <h4 class="my-2 secondary-font">همچنان سوالی دارید؟</h4>
+        <p>
+            اگر سوالی را در سوالات متداول ما پیدا نمی کنید، همواره می توانید با ما تماس بگیرید. ما در اسرع وقت به شما پاسخ می دهیم.
+        </p>
+        </div>
+    </div>
+    <div class="row text-center justify-content-center gap-sm-0 gap-3">
+        <div class="col-sm-6">
+        <div class="py-3 rounded bg-faq-section text-center">
+            <span class="badge bg-label-primary rounded-3 p-2 my-3">
+            <i class="bx bx-phone bx-sm"></i>
+            </span>
+            <h4 class="mb-2"><a class="h4 d-inline-block mb-0" dir="ltr" href="tel:+98 993 889 9105">+98 993 889 9105</a></h4>
+            <p>ما همیشه خوشحالیم که به شما کمک کنیم</p>
+        </div>
+        </div>
+        <div class="col-sm-6">
+        <div class="py-3 rounded bg-faq-section text-center">
+            <span class="badge bg-label-primary rounded-3 p-2 my-3">
+            <i class="bx bx-envelope bx-sm"></i>
+            </span>
+            <h4 class="mb-2"><a class="h4" href="mailto:help@help.com">help@taskjo.ir</a></h4>
+            <p>بهترین راه برای دریافت یک پاسخ سریع</p>
+        </div>
+        </div>
+    </div>
+    <!-- /Contact -->
+    </div>
+    <!--/ Content -->
+{% endblock content %}
+
+{% block footer_javascript_section %}
+<!-- Vendors JS -->
+<script src="{% static '/vendor/libs/swiper/swiper.js' %}"></script>
+{% endblock footer_javascript_section %}
+
+{% block footer_javascript_page %}
+  <!-- Page JS -->    
+  <script src="{% static '/js/ui-carousel.js' %}"></script>
+
+{% endblock footer_javascript_page %}
+
