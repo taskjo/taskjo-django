@@ -41,7 +41,7 @@ class VerifyMixin:
 
 class VerifyView(VerifyMixin, FormView):
     form_class = VerifyForm
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('accounts:login')
     template_name = 'accounts/verify.html'
 
     def get(self, request, *args, **kwargs):
