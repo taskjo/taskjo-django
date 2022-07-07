@@ -46,6 +46,7 @@ CREATE DATABASE DB_NAME
 \q
 python3 manage.py migrate
 python3 manage.py collectstatic
+sudo locale-gen fa_IR.UTF-8
 ```
 
 ```shell
