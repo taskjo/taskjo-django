@@ -1,0 +1,33 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+
+{% block title %}
+یافت نشد | تسکجو
+{% endblock title %}
+{% block head_css_section %}
+<!-- Page CSS -->
+<link rel="stylesheet" href="{% static '/vendor/css/pages/page-misc.css' %}">
+{% endblock head_css_section %}
+
+{% block content %}
+    
+    
+    <!-- Content -->
+
+    <div class="container-fluid flex-grow-1 container-p-y">
+        <div class="misc-wrapper">
+            <div class="mb-3">
+            <img src="{% static '/img/astrobot/astrobot-3.png' %}" alt="page-misc-error-light" width="500" class="img-fluid" data-app-light-img="illustrations/page-misc-error-light.png" data-app-dark-img="illustrations/page-misc-error-dark.png">
+            </div>
+            <h1 class="mb-2 mx-2 secondary-font">صفحه یافت نشد :(</h1>
+            <p class="mb-4 mx-2">ما قادر به یافتن صفحه‌ای که به دنبال آن بودید نشدیم</p>
+            <a href="{% url 'core:index' %}" class="btn btn-primary">بازگشت به خانه</a>
+            </div>
+        </div>
+        <!--/ Content -->
+{% endblock content %}
+
+  
+    
+    

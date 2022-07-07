@@ -6,6 +6,7 @@ from django.views.generic import TemplateView,FormView,View
 # search
 # from django.db.models import Q
 # from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, SearchHeadline
+from django.shortcuts import render
 # auth
 from django.contrib.auth import get_user_model
 # mixin
@@ -236,3 +237,8 @@ class IndexPageView(TemplateView):
 
 class HelpPageView(TemplateView):
     template_name = "core/help.html"
+
+
+def handler404(request, exception):
+        data = {}
+        return render(request,'core/404.html', data)
