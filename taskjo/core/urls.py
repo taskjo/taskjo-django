@@ -2,13 +2,12 @@
 
 from django.urls import path
 
-from .views import AdvanceSearchView,ProjectPartialView,IndexPageView,AboutPageView, \
+from .views import AdvanceSearchView,ProjectPartialView,IndexPageView, \
     HelpPageView,ProfilePageView,DashboardPageView,SettingsPageView,RelatedProjectView
 app_name = 'core'
 
 urlpatterns = [
     path('', IndexPageView.as_view(), name='index'),
-    path('about/', AboutPageView.as_view(), name='about'),
     path('help/', HelpPageView.as_view(), name='help'),
 
     path('dashboard/', DashboardPageView.as_view(), name='dashboard'),

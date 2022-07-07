@@ -236,6 +236,3 @@ class IndexPageView(TemplateView):
 
 class HelpPageView(TemplateView):
     template_name = "core/help.html"
-
-class AboutPageView(TemplateView):
-    template_name = "core/about.html"

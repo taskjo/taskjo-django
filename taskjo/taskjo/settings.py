@@ -178,6 +178,10 @@ STATIC_URL = '/static/'
 # static path in server
 STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    'static/',
+]
 
 MEDIA_URL = '/media/'
 # media path in server by access

@@ -1,2 +1,137 @@
+{% extends 'core/base.html' %}
+{% load static %}
 
+
+{% block title %}
+صفحه اصلی | تسکجو
+{% endblock title %}
+{% block head_css_section %}
+<link rel="stylesheet" href="{% static '/vendor/libs/swiper/swiper.css' %}">
+<!-- Page CSS -->
+<link rel="stylesheet" href="{% static '/vendor/css/pages/page-help-center.css' %}">
+{% endblock head_css_section %}
+{% block head_css_page %}
+    <!-- Page CSS -->
+  <link rel="stylesheet" href="{% static '/vendor/css/pages/ui-carousel.css' %}">
+{% endblock head_css_page %}
+
+{% block content %}
+    <!-- Content -->
+
+    <div class="container-fluid flex-grow-1 container-p-y">
+    <div class="card overflow-hidden">
+        <!-- Help Center Header -->
+        <div class="help-center-header d-flex flex-column justify-content-center align-items-center">
+        <img src="{% static '/img/astrobot/astrobot-1.png' %}" alt="" width="400" class="mt-2">
+        <h3 class="text-center zindex-1 secondary-font mt-3">سلام، به تسکجو خوش آمدید.</h3>
+        </div>
+        <!-- /Help Center Header -->
+
+        <!-- Popular Articles -->
+        <div class="help-center-popular-articles py-5">
+        <div class="container-xl">
+            <h4 class="text-center mt-2 pb-3 secondary-font">چرا تسکجو؟</h4>
+            <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="row mb-3">
+                <div class="col-md-4 mb-md-0 mb-4">
+                    <div class="card border shadow-none">
+                    <div class="card-body text-center">
+                        <img class="mb-4" src="{% static '/img/icons/unicons/cube.png' %}" height="48" alt="Help center articles">
+                        <h5>وب اسکریپینگ</h5>
+                        <p>یافتن پروژه های فریلنسری از وبسایت های پرطرفدار فریلنسری</p>
+                    </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-md-0 mb-4">
+                    <div class="card border shadow-none">
+                    <div class="card-body text-center">
+                        <img class="mb-4" src="{% static '/img/icons/unicons/rocket-square.png' %}" height="48" alt="Help center articles">
+                        <h5>جستجوی پیشرفته</h5>
+                        <p>امکان فیلترگذاری و جستجوی پروژه ها براساس دسته بندی و مهارت تخصصی</p>
+                    </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card border shadow-none">
+                    <div class="card-body text-center">
+                        <img class="mb-4" src="{% static '/img/icons/unicons/chart.png' %}" height="48" alt="Help center articles">
+                        <h5>داشبورد</h5>
+                        <p>میزکار فریلنسری برای بررسی پروژه های جدید و و گزارش پروژه براساس مهارت</p>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+        <!-- /Popular Articles -->
+
+        <!-- Keep Learning -->
+        <div class="help-center-keep-learning help-center-bg-alt py-5 pb-4">
+        <div class="container-xl my-3">
+            <h4 class="text-center pb-4 secondary-font">به زودی در تسکجو</h4>
+            <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="row">
+                <div class="col-md-4 mb-md-0 mb-4 text-center">
+                    <img src="{% static '/img/icons/unicons/community.png' %}" class="mb-2" height="48" alt="Help center blog">
+                    <h5 class="my-3">تیم سازی</h5>
+                    <p class="mb-1">
+                    قابلیت مدیریت تیم و انجام پروژه های فریلنسری به صورت تیمی 
+                    </p>
+                </div>
+                <div class="col-md-4 mb-md-0 mb-4 text-center">
+                    <img src="{% static '/img/icons/unicons/desktop.png' %}" class="mb-2" height="48" alt="Help center inspiration">
+                    <h5 class="my-3">پروژه های خارج از کشور</h5>
+                    <p class="mb-1">یافتن پروژه های فریلنسری از وبسایت های پرطرفدار خارج از کشور</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <img src="{% static '/img/icons/unicons/cc-success.png' %}" class="mb-2" height="48" alt="Help center inspiration">
+                    <h5 class="my-3">پلتفرم قیمت گذاری</h5>
+                    <p class="mb-1">تحلیل قیمت گذاری پروژه ها براساس مهارت تخصصی</p>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+        <!-- /Keep Learning -->
+
+        <!-- Help Area -->
+        <div class="help-center-contact-us">
+        <div class="container-xl">
+            <div class="row justify-content-center py-5 my-3">
+            <div class="col-md-8 col-lg-6 text-center">
+                <h4 class="secondary-font">با ما در ارتباط باشید</h4>
+                <p class="mb-4">
+                جهت ارتباط با ما و ارسال انتقادات و پیشنهادات با ما در تماس باشید.
+                </p>
+                <div class="d-flex justify-content-center flex-wrap gap-4">
+                <a href="javascript:void(0);" class="btn btn-label-primary">واتساپ</a>
+                <a href="jhttps://github.com/taskjo/taskjo-django" class="btn btn-label-primary">گیت هاب</a>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+        <!-- /Help Area -->
+    </div>
+    </div>
+    <!--/ Content -->
+{% endblock content %}
+
+{% block footer_javascript_section %}
+<!-- Vendors JS -->
+<script src="{% static '/vendor/libs/swiper/swiper.js' %}"></script>
+{% endblock footer_javascript_section %}
+
+{% block footer_javascript_page %}
+  <!-- Page JS -->    
+  <script src="{% static '/js/ui-carousel.js' %}"></script>
+
+{% endblock footer_javascript_page %}
 

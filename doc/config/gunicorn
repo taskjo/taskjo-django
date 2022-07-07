@@ -1,0 +1,18 @@
+[program:taskjo]
+directory=/opt/taskjo/taskjo
+command=/opt/taskjo/taskjo-venv/bin/gunicorn taskjo.wsgi:application --workers 3 --bind 127.0.0.1:8000 --log-level info ;
+
+
+stdout_logfile = /opt/taskjo/logs/gunicorn/access.log
+stderr_logfile = /opt/taskjo/logs/gunicorn/error.log
+stdout_logfile_maxbytes=5000000
+stderr_logfile_maxbytes=5000000
+stdout_logfile_backups=100000
+stderr_logfile_backups=100000
+
+autostart=true
+autorestart=true
+startsecs=10
+stopasgroup=true
+priority=99
+
