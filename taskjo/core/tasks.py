@@ -10,6 +10,10 @@ from core.models import Projects, Skill
 from taskjo.celery import app
 
 from datetime import datetime, timedelta, time
+import logging
+
+logger = logging.getLogger(__name__)
+
 User = get_user_model()
 
 @app.task
@@ -48,6 +52,7 @@ def send_users_email(subject="", html_template="", txt_template=""):
                 msg.send()
             except Exception as e:
                 print(str(e))
+                logger.error('Email send,Failed '+ str(e))
 
 @app.task
 def set_skill_class():

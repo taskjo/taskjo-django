@@ -1,6 +1,7 @@
 from django import template
 from core.models import Projects
 from django.utils.html import format_html
+from taskjo.utils import jdatetime as jd
 from django.shortcuts import get_object_or_404
 
 register = template.Library()
@@ -24,6 +25,14 @@ def user_image(user):
         return user.image.url
     return "/static/img/avatars/1.png"
 
+@register.filter(name='user_register_date')
+def user_register_date(user):
+    try:
+        return jd.pretty_jdatetime_format(user.date_joined)
+    except Exception as e:
+        print(str(e))
+        return ''
+        
 @register.filter(name='is_related_project')
 def is_related_project(user, project_id):
     try:
