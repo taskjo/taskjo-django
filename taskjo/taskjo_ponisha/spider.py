@@ -8,7 +8,7 @@ from core.models import Projects, Category, Skill, Employer, Websites
 # TODO add logger to this file
 # TODO add exception handler to this file
 # TODO add try except to this file
-# TODO FIX max-retries-exceeded-with-url-in-requests
+# TODO FIX max-retries-exceeded-with-url-in-requests -- verify=False
 
 logger = logging.getLogger(__name__)
 

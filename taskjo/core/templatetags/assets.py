@@ -6,6 +6,4 @@ register = template.Library()
 
 @register.filter(name='assets_path')
 def assets_path(mode):
-    if settings.DEBUG :
-        return settings.STATIC_URL
-    return settings.STATIC_ROOT
+    return settings.STATIC_URL

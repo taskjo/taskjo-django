@@ -119,13 +119,6 @@ DATABASES = {
 }
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = ''
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-
 
 
 # Password validation
@@ -169,9 +162,7 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 # Successful login redirect path
 LOGIN_REDIRECT_URL = '/'
 
-# Email Settings
-#EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-#EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
+
 
 # AUTH BACKENDS
 AUTHENTICATION_BACKENDS = [
@@ -184,16 +175,12 @@ AUTHENTICATION_BACKENDS = [
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    'static/',
-]
-# staticfiles in nginx
+# static path in server
 STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
 
 
 MEDIA_URL = '/media/'
+# media path in server by access
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
@@ -222,6 +209,7 @@ result_serializer = 'json'
 task_serializer = 'json'
 timezone = 'Asia/Tehran'
 
+# SMS GATEWAY sms.ir Settings
 SMSIR_URL_GET_TOKEN = "https://RestfulSms.com/api/Token"
 SMSIR_URL_ULTRA_FAST_SEND = "https://RestfulSms.com/api/UltraFastSend"
 SMSIR_TEMPLATE_VERIFY = "your_template_code"
@@ -230,7 +218,7 @@ SMSIR_SECRET_KEY = "your_secret_key"
 FAKE_SMS = True
 
 
-#Email
+# Email Settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'domain'
 EMAIL_PORT = 587

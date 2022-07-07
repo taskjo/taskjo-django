@@ -1,4 +1,11 @@
-# from .settings import *
+SECRET_KEY = 'key'
+
+# static path in server
+#STATIC_ROOT = '/var/cache/taskjo/static'
+# media path in server by access
+#MEDIA_ROOT = '/opt/taskjo/media'
+#DEBUG = False
+
 
 # BROKER_URL = 'redis://localhost:6379'
 BROKER_URL = 'redis://redis:6379' # docker
@@ -8,6 +15,14 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Tehran'
+
+# celery setting is deprecated and scheduled for removal in version 6.0.0.
+accept_content = ['application/json']
+# broker_url = 'redis://localhost:6379'
+# result_backend = 'redis://localhost:6379'
+result_serializer = 'json'
+task_serializer = 'json'
+timezone = 'Asia/Tehran'
 
 
 DATABASES = {
@@ -21,6 +36,7 @@ DATABASES = {
     }
 }
 
+# SMS GATEWAY sms.ir Settings
 SMSIR_URL_GET_TOKEN = "https://RestfulSms.com/api/Token"
 SMSIR_URL_ULTRA_FAST_SEND = "https://RestfulSms.com/api/UltraFastSend"
 SMSIR_TEMPLATE_VERIFY = "your_template_code"
