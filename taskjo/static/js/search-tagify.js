@@ -81,7 +81,9 @@
   const website = document.getElementById('website');
   const search_category = $('#category'); // onchange
   const search_website = $('#website');
-  const user_input = $("#user-input")
+  const user_input = $("#user-input");
+  const min_price = $("#minimum-price");
+  const max_price = $("#maximum-price");
   const sort_by = $('#sort_by')
   const page = $('#page');
 
@@ -112,6 +114,8 @@
         skills : skills_selected,
         websites:website_selected,
         categories:category_selected,
+        min_price : min_price.val(),
+        max_price : max_price.val(),
         sort_by : sort_by.val(),
         page : page.val()
     }
@@ -136,6 +140,24 @@
   }
 
   user_input.on('keyup', function () {
+      var request_parameters= init()
+      // if scheduled_function is NOT false, cancel the execution of the function
+      if (scheduled_function) {
+          clearTimeout(scheduled_function)
+      }
+      // setTimeout returns the ID of the function to be executed
+      scheduled_function = setTimeout(ajax_call, delay_by_in_ms, endpoint, request_parameters)
+  })
+  min_price.on('keyup', function () {
+      var request_parameters= init()
+      // if scheduled_function is NOT false, cancel the execution of the function
+      if (scheduled_function) {
+          clearTimeout(scheduled_function)
+      }
+      // setTimeout returns the ID of the function to be executed
+      scheduled_function = setTimeout(ajax_call, delay_by_in_ms, endpoint, request_parameters)
+  })
+  max_price.on('keyup', function () {
       var request_parameters= init()
       // if scheduled_function is NOT false, cancel the execution of the function
       if (scheduled_function) {

@@ -8,7 +8,7 @@ from core.models import Projects, Category, Skill, Employer, Websites
 # TODO add logger to this file
 # TODO add exception handler to this file
 # TODO add try except to this file
-# TODO FIX max-retries-exceeded-with-url-in-requests
+# TODO FIX max-retries-exceeded-with-url-in-requests -- verify=False
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +30,12 @@ class PonishaSpider:
         while self.is_repeat and self.page <= self.max_page:
             url = self.build_url(skills=skills, category=category, page=self.page)
             # page = requests.get(self.site_search_url)
-            page = requests.get(url)
+            try:
+                page = requests.get(url)
+            except Exception as e:
+                page = requests.get(url, verify=False)
+                logger.error('Failed to connect url(ssl-Max retries): '+ str(e))
+
             response = BeautifulSoup(page.content, 'html.parser')
 
             projects = self.get_project_list(response) # all project in page
@@ -83,7 +88,13 @@ class PonishaSpider:
     def get_full_project_page(self, project_dict):
         """ get full project page -> by response(html) and fill project_dict """
 
-        page = requests.get(project_dict['long_link'])
+        
+        try:
+            page = requests.get(project_dict['long_link'])
+        except Exception as e:
+            page = requests.get(project_dict['long_link'], verify=False)
+            logger.error('Failed to connect url(ssl-Max retries): '+ str(e))
+
         response = BeautifulSoup(page.content, 'html.parser')
 
         # TODO add project state

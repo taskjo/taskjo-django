@@ -1,8 +1,7 @@
-from django.conf import settings
 from django.db.models import Q
-from .models import Projects
+from core.models import Projects
+from .skill_class_finder import BXL_DEFAULT
 import json 
-import os
 
 def convert_tagify_to_list(tagified_list):
     result_list = []
@@ -32,7 +31,7 @@ def create_dashboard_report(user_skills_list, current_user):
         all_skill_dic['value_max'] = value_max
 
         usr_skill_dict['class'] = set_skills_class("bg",usr_skill_dict['name'],index=index)
-        all_skill_dic['class'] = set_skills_class(all_skill_dic['name'],index=index)
+        all_skill_dic['class'] = set_skills_class("bx",skill=skill,index=index)
 
         usr_proj_list.append(usr_skill_dict)
         all_proj_list.append(all_skill_dic)
@@ -43,42 +42,49 @@ def create_dashboard_report(user_skills_list, current_user):
 def compute_percentage(proj_list):
 
     for proj in proj_list:
-        proj['valuenow'] = round(100 * float(proj['valuenow'] / proj['valuemax']),2)
-        proj['valuemax'] = proj['valuemax']
+        if proj['valuemax'] > 0:
+            proj['valuenow'] = round(100 * float(proj['valuenow'] / proj['valuemax']),2)
+            proj['valuemax'] = proj['valuemax']
     return proj_list
 
-def set_skills_class(class_type="",skills=[],index=0):
-    all_class_list = ['bx-photo-album','bxl-php','bxl-microsoft','bx-code-block','bx-code']
+def set_skills_class(class_type="",skill="",index=0):
+
     usr_class_list = ['primary','success','danger','info','primary']
+
+    if class_type == "bx":
+        skill_class = skill.skill_style_class
+        if skill_class == "":
+            skill_class = BXL_DEFAULT
+        return skill_class
     if class_type == "bg":
         return  usr_class_list[index]
-    return all_class_list[index]
-    # TODO search and set icon 
-    # TODO save class name(style) in db 
-    # class type bg or bxl
-    # skills array 
-    # file_path = os.path.join(settings.BASE_DIR,"core", "boxicons.json")
-    # with open(file_path, 'r') as f:
-    #     my_json_obj = json.load(f)
-    #     print(my_json_obj)
-    # pass
-
+    return BXL_DEFAULT
+ 
 def build_search_query(request):
     sort_by = '-id'
     query_text = request.GET.get("q")
+    min_price = request.GET.get("min_price")
+    max_price = request.GET.get("max_price")
     sort = request.GET.get("sort_by")
     skills_ids = request.GET.getlist("skills[]") # get array of id
     websties_ids = request.GET.getlist("websites[]")
     category_ids = request.GET.getlist("categories[]")
-
+    
+    min_price = convert_budget_decimal(min_price)
+    max_price = convert_budget_decimal(max_price)
+    
     qdict = {
         'title__contains': query_text,
         'skills__in': skills_ids,
         'website__in': websties_ids,
         'category__in': category_ids,
+        'budget__gte': min_price,
+        'budget__lte': max_price
     }
     # filter out None values
-    not_none_parameters = {single_query: qdict.get(single_query) for single_query in qdict if qdict.get(single_query) != '' and qdict.get(single_query) != []}
+    not_none_parameters = {single_query: qdict.get(single_query) for single_query in qdict 
+        if qdict.get(single_query) != '' and qdict.get(single_query) != [] and qdict.get(single_query) != None}
+    
     filter_list = Q()
     for item in not_none_parameters:
         filter_list &= Q(**{item:not_none_parameters.get(item)})
@@ -88,3 +94,8 @@ def build_search_query(request):
     if sort:
         sort_by = sort
     return filter_list,sort_by
+
+def convert_budget_decimal(value):
+    budget = str(value).replace(",","")
+    if budget.isdigit():
+        return int(float(budget)*10)

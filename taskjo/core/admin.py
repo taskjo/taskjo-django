@@ -13,7 +13,10 @@ class CategoryAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 @admin.register(Skill)
 class SkillAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('name', 'website',)
+    fieldsets = (
+        (('skills'), {'fields': ('name','website','skill_style_class', 'url')}),
+    )
+    list_display = ('name','skill_style_class', 'website',)
     search_fields = ('name',)
     list_select_related = ('website',)
 

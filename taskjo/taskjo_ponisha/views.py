@@ -12,5 +12,4 @@ class StatusPageView(TemplateView):
 
         context = super(StatusPageView,self).get_context_data(*args, **kwargs)
         context['tasks'] = PeriodicTask.objects.all()
-        print(context['tasks'])
         return context
