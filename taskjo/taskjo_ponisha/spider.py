@@ -45,9 +45,11 @@ class PonishaSpider:
                 try:
                     project_dict = self.get_project_dict(project_selector=project)
                     project_result, skills_result = self.get_full_project_page(project_dict=project_dict)
-                    skills_query_obj =  self.get_skills_from_db(skills_result)
+                    skills_query_obj =  self.get_skills_from_db(skills_result) # M2M query set
+
                     project_obj = Projects.objects.create(**project_result)
                     project_obj.skills.set(skills_query_obj) # M2M relation
+
                 except Exception as e:
                     if not "core_projects_short_link" in str(e):
                         logger.error('Failed to create project: '+ str(e))

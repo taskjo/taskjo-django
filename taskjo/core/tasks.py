@@ -27,8 +27,10 @@ def set_users_related_project():
         start_date = datetime.combine(datetime.now() - timedelta(days=settings.N_DAYS_AGO) , time.min)
         end_date = datetime.combine(datetime.now(), time.max)
         user_projects = Projects.objects.filter(skills__in=user.skills.all(), created_at__range=(start_date, end_date))
+
+        user.projects.clear() # clear all recent projects
         user.projects.set(user_projects)
-        user.projects_count = user_projects.count()
+        user.projects_count = user.projects.all().count()
         user.save()
 
 @app.task
