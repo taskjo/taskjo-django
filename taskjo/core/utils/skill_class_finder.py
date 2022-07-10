@@ -64,8 +64,9 @@ class SkillNameFinder:
                             return BX_format.format(data.replace(".svg", ""))
 
     def set_skill_name(self,json_result,iconfify_result):
-        
-        if json_result == iconfify_result:
+        result = BXL_DEFAULT
+
+        if json_result == iconfify_result and json_result != None:
             result = iconfify_result
         elif iconfify_result:
             result = iconfify_result
@@ -73,7 +74,6 @@ class SkillNameFinder:
             result = json_result
         else:
             result = BXL_DEFAULT
-
         return result
     
 
