@@ -61,7 +61,7 @@ def set_skill_class():
     skills = Skill.objects.filter(Q(skill_style_class="") | Q(skill_style_class=skill_finder.BXL_DEFAULT))
     for skill in skills:
         skill_class = skill_finder.get_skill_class(skill)
-        if skill_class and skill_class != skill_finder.BXL_DEFAULT:
+        if skill_class:
             skill.skill_style_class = skill_class
             skill.save()
 
