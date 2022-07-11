@@ -34,7 +34,7 @@
             <div class="mt-2">
               <span class="badge bg-warning mt-1">وبسایت: {{ project.website}}</span>
               <span class="badge bg-warning mt-1">پیشنهاد: {{ project.applicants_number}}</span>
-              <span class="badge bg-warning mt-1">دسته بندی: {{ project.categoriy}}</span>
+              <span class="badge bg-warning mt-1">دسته بندی: {{ project.category}}</span>
               {% for skill in project.skills.all %}
                 <span class="badge bg-primary mt-1">مهارت: {{ skill }}</span>
               {% endfor %}
