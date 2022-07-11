@@ -43,8 +43,8 @@ def compute_percentage(proj_list):
 
     for proj in proj_list:
         if proj['valuemax'] > 0:
+            proj['valuenow_count'] = proj['valuenow']
             proj['valuenow'] = round(100 * float(proj['valuenow'] / proj['valuemax']),2)
-            proj['valuemax'] = proj['valuemax']
     return proj_list
 
 def set_skills_class(class_type="",skill="",index=0):
