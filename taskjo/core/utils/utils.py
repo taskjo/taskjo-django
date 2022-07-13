@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.db.models import Count
 from core.models import Projects
 from .skill_class_finder import BXL_DEFAULT
 import json 
@@ -17,6 +18,7 @@ def create_dashboard_report(user_skills_list, current_user):
     """
     usr_proj_list = []
     all_proj_list = []
+    exclude_proj_list = []
     value_max = Projects.objects.all().count()
     for index,skill in enumerate(user_skills_list):
         usr_skill_dict = {}
@@ -24,17 +26,24 @@ def create_dashboard_report(user_skills_list, current_user):
 
         all_skill_dic['name'] = usr_skill_dict['name'] = skill.name
 
-        usr_skill_dict['valuenow'] = Projects.objects.filter(skills=skill,id__in=current_user.projects.all()).count()
+        usr_skill_dict['obj'] = Projects.objects.filter(skills=skill, id__in=current_user.projects.all()) \
+                                                        .filter(~Q(id__in=exclude_proj_list))
+        usr_skill_dict['valuenow'] = usr_skill_dict['obj'].count()
         usr_skill_dict['valuemax'] = Projects.objects.filter(id__in=current_user.projects.all()).count()
 
         all_skill_dic['valuenow'] = Projects.objects.filter(skills=skill).count()
         all_skill_dic['value_max'] = value_max
 
-        usr_skill_dict['class'] = set_skills_class("bg",usr_skill_dict['name'],index=index)
-        all_skill_dic['class'] = set_skills_class("bx",skill=skill,index=index)
+        usr_skill_dict['class'] = set_skills_class("bg", usr_skill_dict['name'], index=index)
+        all_skill_dic['class'] = set_skills_class("bx", skill=skill, index=index)
 
         usr_proj_list.append(usr_skill_dict)
         all_proj_list.append(all_skill_dic)
+
+        # TODO FIX dublicated projects in dashboard report need Review
+        for proj in usr_proj_list:
+            proj_ids = [proj.id for proj in proj['obj']]
+            exclude_proj_list.extend(proj_ids)
 
     usr_proj_list = compute_percentage(usr_proj_list)
     return usr_proj_list,all_proj_list
