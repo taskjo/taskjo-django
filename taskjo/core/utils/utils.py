@@ -84,6 +84,7 @@ def build_search_query(request):
     
     qdict = {
         'title__contains': query_text,
+        'description__contains': query_text,
         'skills__in': skills_ids,
         'website__in': websties_ids,
         'category__in': category_ids,
@@ -97,9 +98,6 @@ def build_search_query(request):
     filter_list = Q()
     for item in not_none_parameters:
         filter_list &= Q(**{item:not_none_parameters.get(item)})
-    # set description
-    if query_text:
-        filter_list |= Q(**{'description__contains':query_text}) # need review -> search_vector and rank 
     if sort:
         sort_by = sort
     return filter_list,sort_by
