@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,17 +22,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'fake'
+SECRET_KEY = config('SECRET_KEY', default='your-secret-key-here-change-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 #IF True --insecure in localy
 
-ALLOWED_HOSTS = [
-    '*',
-    '127.0.0.1',
-    'taskjo.ir'
-]
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost', cast=lambda v: [s.strip() for s in v.split(',')])
 
 
 # Application definition
@@ -110,11 +107,11 @@ WSGI_APPLICATION = 'taskjo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db',
-        'USER': 'fake',
-        'PASSWORD': 'fake',
-        'HOST': 'localhost',
-        'PORT' : '5432'
+        'NAME': config('DB_NAME', default='taskjo_db'),
+        'USER': config('DB_USER', default='taskjo_user'),
+        'PASSWORD': config('DB_PASSWORD', default=''),
+        'HOST': config('DB_HOST', default='localhost'),
+        'PORT': config('DB_PORT', default='5432'),
     }
 }
 
@@ -196,9 +193,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # TODO add environ ('',localhost)
 
-BROKER_URL = 'redis://localhost:6379'
+# Celery Configuration
+BROKER_URL = config('REDIS_URL', default='redis://localhost:6379')
 # BROKER_URL = 'redis://redis:6379' # docker service
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = config('REDIS_URL', default='redis://localhost:6379')
 # CELERY_RESULT_BACKEND = 'redis://redis:6379' # docker service
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
@@ -214,26 +212,25 @@ task_serializer = 'json'
 timezone = 'Asia/Tehran'
 
 # SMS GATEWAY sms.ir Settings
-SMSIR_URL_GET_TOKEN = "https://RestfulSms.com/api/Token"
-SMSIR_URL_ULTRA_FAST_SEND = "https://RestfulSms.com/api/UltraFastSend"
-SMSIR_TEMPLATE_VERIFY = "your_template_code"
-SMSIR_USER_API_KEY = "your_api_key"
-SMSIR_SECRET_KEY = "your_secret_key"
-FAKE_SMS = True
-
+SMSIR_URL_GET_TOKEN = config('SMSIR_URL_GET_TOKEN', default="https://RestfulSms.com/api/Token")
+SMSIR_URL_ULTRA_FAST_SEND = config('SMSIR_URL_ULTRA_FAST_SEND', default="https://RestfulSms.com/api/UltraFastSend")
+SMSIR_TEMPLATE_VERIFY = config('SMSIR_TEMPLATE_VERIFY', default="your_template_code")
+SMSIR_USER_API_KEY = config('SMSIR_USER_API_KEY', default="your_api_key")
+SMSIR_SECRET_KEY = config('SMSIR_SECRET_KEY', default="your_secret_key")
+FAKE_SMS = config('FAKE_SMS', default=True, cast=bool)
 
 # Email Settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'domain'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-EMAIL_HOST_USER = 'server@email.com'
-EMAIL_HOST_PASSWORD = 'pass'
-RECIPIENT_ADDRESS=''
-DEFAULT_FROM_EMAIL = 'server@email.com'
-SERVER_EMAIL = 'server@email.com'
-N_DAYS_AGO = 2
+EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+EMAIL_USE_SSL = config('EMAIL_USE_SSL', default=False, cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+RECIPIENT_ADDRESS = config('RECIPIENT_ADDRESS', default='')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@taskjo.ir')
+SERVER_EMAIL = config('SERVER_EMAIL', default='noreply@taskjo.ir')
+N_DAYS_AGO = config('N_DAYS_AGO', default=2, cast=int)
 
 try:
     from .local_settings import *
