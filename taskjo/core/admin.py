@@ -1,67 +1,86 @@
 from django.contrib import admin
-from import_export.admin import ImportExportModelAdmin,ExportActionModelAdmin
-from .models import Projects, Category, Skill, Employer, Freelancer, Websites
-from django.utils.html import format_html
-from taskjo.utils import jdatetime as jd
+from django.utils.translation import gettext_lazy as _
+from .models import Website, Category, Skill, Employer, Freelancer, Project
+
+
+@admin.register(Website)
+class WebsiteAdmin(admin.ModelAdmin):
+    list_display = ('name', 'url', 'is_active', 'project_count', 'created_at')
+    list_filter = ('is_active', 'created_at')
+    search_fields = ('name', 'url')
+    ordering = ('name',)
+    
+    def project_count(self, obj):
+        return obj.project_count
+    project_count.short_description = _('تعداد پروژه‌ها')
 
 
 @admin.register(Category)
-class CategoryAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('name', 'website',)
-    search_fields = ('name',)
-    list_select_related = ('website',)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'website', 'url')
+    list_filter = ('website',)
+    search_fields = ('name', 'website__name')
+    ordering = ('website', 'name')
+
 
 @admin.register(Skill)
-class SkillAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    fieldsets = (
-        (('skills'), {'fields': ('name','website','skill_style_class', 'url')}),
-    )
-    list_display = ('name','skill_style_class', 'website',)
+class SkillAdmin(admin.ModelAdmin):
+    list_display = ('name', 'website', 'skill_style_class')
+    list_filter = ('website', 'skill_style_class')
+    search_fields = ('name', 'website__name')
+    ordering = ('website', 'name')
+
+
+@admin.register(Employer)
+class EmployerAdmin(admin.ModelAdmin):
+    list_display = ('employer_username', 'employer_url', 'website')
+    list_filter = ('website',)
+    search_fields = ('employer_username', 'employer_url', 'website__name')
+    ordering = ('website', 'employer_username')
+
+
+@admin.register(Freelancer)
+class FreelancerAdmin(admin.ModelAdmin):
+    list_display = ('name', 'star', 'url')
     search_fields = ('name',)
-    list_select_related = ('website',)
-
-# TODO Update this part in next version
-admin.site.register(Employer)
-admin.site.register(Freelancer)
-
-@admin.register(Projects)
-class ProjectsAdmin(ImportExportModelAdmin, ExportActionModelAdmin, admin.ModelAdmin):
-    def remaining_time_j(self, obj):
-        return jd.pretty_jdatetime_format(obj.remaining_time)
-
-    def clickable_short_link(self, instance):
-        return format_html(
-            '<a href="{0}" target="_blank">{1}</a>',
-            instance.short_link,
-            'کلیک کنید'
-        )
-
-    def budget_format(self, instance):
-        budget = '{:,}'.format(int(instance.budget)/10)
-        return format_html(
-            '{0} تومان',
-            budget)
-
-    remaining_time_j.short_description = "مهلت انجام"
-    clickable_short_link.short_description = "لینک کوتاه"
-    budget_format.short_description = "بودجه به تومان"
+    ordering = ('name',)
 
 
+@admin.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
     list_display = (
-        'title', 'remaining_time_j', 'website', 'category', 'clickable_short_link', 'budget_format',)
-    list_filter = (
-        'category',
-        'skills',
-        'website',
+        'title', 'website', 'category', 'employer', 
+        'budget', 'state', 'is_active', 'created_at'
     )
-    list_select_related = ('website',)
-    search_fields = (
-        'title','short_link')
-
-# admin.site.register(Websites)
-@admin.register(Websites)
-class WebsitesAdmin(admin.ModelAdmin):
-    def project_count(self, obj):
-        return obj.projects_set.count()
-    project_count.short_description = "تعداد پروژه"
-    list_display = ('name', 'url', 'is_active', 'project_count')
+    list_filter = (
+        'website', 'category', 'state', 'is_active', 
+        'created_at', 'updated_at'
+    )
+    search_fields = ('title', 'description', 'website__name', 'category__name')
+    readonly_fields = ('created_at', 'updated_at')
+    filter_horizontal = ('skills', 'freelancers')
+    ordering = ('-created_at',)
+    
+    fieldsets = (
+        (_('اطلاعات اصلی'), {
+            'fields': ('title', 'description', 'short_link', 'long_link')
+        }),
+        (_('جزئیات پروژه'), {
+            'fields': ('budget', 'price_min', 'price_max', 'applicants_number', 'city')
+        }),
+        (_('وضعیت'), {
+            'fields': ('state', 'is_active', 'remaining_time')
+        }),
+        (_('ارتباطات'), {
+            'fields': ('website', 'category', 'employer', 'skills', 'freelancers', 'similar_projects')
+        }),
+        (_('تاریخ‌ها'), {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related(
+            'website', 'category', 'employer'
+        ).prefetch_related('skills', 'freelancers')
